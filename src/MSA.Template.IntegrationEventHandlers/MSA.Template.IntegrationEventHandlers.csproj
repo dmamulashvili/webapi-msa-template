@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MSA.Template.Core\MSA.Template.Core.csproj" />
+      <ProjectReference Include="..\MSA.Template.IntegrationEvents\MSA.Template.IntegrationEvents.csproj" />
+      <ProjectReference Include="..\MSA.Template.SharedKernel\MSA.Template.SharedKernel.csproj" />
+    </ItemGroup>
+
+</Project>
