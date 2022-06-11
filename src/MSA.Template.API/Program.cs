@@ -95,16 +95,15 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<BrotliCompressionProvider>();
     options.EnableForHttps = true;
 });
-builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
-{
-    options.Level = CompressionLevel.Fastest;
-});
+builder.Services.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Fastest; });
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<MasterDbContext>());
 builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<IIdentityServiceProvider>(p => p.GetRequiredService<IdentityService>());
 builder.Services.AddScoped<IIdentityService>(p => p.GetRequiredService<IdentityService>());
+
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -123,6 +122,8 @@ app.UseMiddleware<IdentityMiddleware>();
 app.MapControllers();
 
 app.UseResponseCompression();
+
+app.MapHealthChecks("/health");
 
 app.Services.GetRequiredService<MasterDbContext>().Database.Migrate();
 
