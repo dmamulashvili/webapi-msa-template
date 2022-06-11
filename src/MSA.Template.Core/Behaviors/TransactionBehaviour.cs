@@ -66,7 +66,7 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
                 await _integrationEventService.PublishEventsAsync(cancellationToken);
 
-                await _auditEventService.PublishAllAsync();
+                await _auditEventService.PublishEventsAsync(cancellationToken);
 
                 return response;
             });

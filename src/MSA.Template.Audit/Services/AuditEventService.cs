@@ -16,13 +16,13 @@ public class AuditEventService : IAuditEventService
         _logger = logger;
     }
 
-    public Task AddAsync(BaseAuditEvent @event)
+    public Task AddEventAsync(BaseAuditEvent @event)
     {
         _events.Add(@event);
         return Task.CompletedTask;
     }
 
-    public async Task PublishAllAsync()
+    public async Task PublishEventsAsync(CancellationToken cancellationToken)
     {
         foreach (var @event in _events)
         {
@@ -30,7 +30,7 @@ public class AuditEventService : IAuditEventService
             {
                 c.CorrelationId = @event.CorrelationId;
                 c.InitiatorId = @event.InitiatorId;
-            });
+            }, cancellationToken);
         }
     }
 }
