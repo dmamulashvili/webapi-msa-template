@@ -35,6 +35,6 @@ public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedD
                     x.ItemPrice,
                     x.Quantity)).ToList());
         
-        return _integrationEventService.AddAsync(orderPlacedIntegrationEvent);
+        return _integrationEventService.AddEventAsync(orderPlacedIntegrationEvent);
     }
 }

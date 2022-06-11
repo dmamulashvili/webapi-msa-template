@@ -64,7 +64,7 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
                 await _unitOfWork.CommitTransactionAsync(transaction);
 
-                await _integrationEventService.PublishAllAsync();
+                await _integrationEventService.PublishEventsAsync(cancellationToken);
 
                 await _auditEventService.PublishAllAsync();
 
