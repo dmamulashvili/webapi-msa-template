@@ -5,9 +5,9 @@ namespace MSA.Template.SharedKernel;
 
 public class BaseIntegrationEvent : IIntegrationEvent
 {
-    public Guid CorrelationId { get; protected set; }
+    public Guid CorrelationId { get; protected init; }
 
-    public Guid UserIdentity { get; set; }
+    public Guid InitiatorId { get; private set; }
 
-    void IIntegrationEvent.SetIdentity(Guid identity) => UserIdentity = identity;
+    void IIntegrationEvent.SetInitiator(Guid initiatorId) => InitiatorId = initiatorId;
 }

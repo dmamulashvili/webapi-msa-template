@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using MSA.Template.SharedKernel;
 using MSA.Template.SharedKernel.IntegrationEvents;
 using MSA.Template.SharedKernel.Interfaces;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ public class IntegrationEventService : IIntegrationEventService
         _logger = logger;
     }
 
-    public Task AddEventAsync(IIntegrationEvent @event)
+    public Task AddEventAsync(BaseIntegrationEvent @event)
     {
         _events.Add(@event);
         return Task.CompletedTask;
@@ -33,8 +34,11 @@ public class IntegrationEventService : IIntegrationEventService
     {
         foreach (var @event in _events)
         {
-            await _eventBus.Publish(@event, @event.GetType(), c => c.InitiatorId = _identityService.GetUserIdentity(),
-                cancellationToken);
+            await _eventBus.Publish(@event, @event.GetType(), c =>
+            {
+                c.CorrelationId = @event.CorrelationId;
+                c.InitiatorId = @event.InitiatorId;
+            }, cancellationToken);
         }
 
         _events.Clear();

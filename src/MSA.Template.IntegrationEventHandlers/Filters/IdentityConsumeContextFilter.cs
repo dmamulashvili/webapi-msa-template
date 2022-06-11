@@ -24,8 +24,8 @@ public class IdentityConsumeContextFilter<T> : IFilter<ConsumeContext<T>> where 
 
         if (context.Message is IIntegrationEvent @event)
         {
-            @event.SetIdentity(context.InitiatorId.Value);
-            _identityServiceProvider.SetIdentity(@event.UserIdentity);
+            @event.SetInitiator(context.InitiatorId.Value);
+            _identityServiceProvider.SetIdentity(@event.InitiatorId);
         }
 
         return next.Send(context);

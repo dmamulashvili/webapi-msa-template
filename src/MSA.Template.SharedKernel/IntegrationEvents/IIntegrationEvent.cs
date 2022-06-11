@@ -6,7 +6,7 @@ public interface IIntegrationEvent
 {
     Guid CorrelationId { get; }
 
-    Guid UserIdentity { get; }
+    Guid InitiatorId { get; }
 
-    void SetIdentity(Guid identity);
+    void SetInitiator(Guid initiatorId);
 }

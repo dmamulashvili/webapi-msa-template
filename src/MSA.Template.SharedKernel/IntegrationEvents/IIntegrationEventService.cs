@@ -5,6 +5,6 @@ namespace MSA.Template.SharedKernel.IntegrationEvents;
 
 public interface IIntegrationEventService
 {
-    Task AddEventAsync(IIntegrationEvent @event);
+    Task AddEventAsync(BaseIntegrationEvent @event);
     Task PublishEventsAsync(CancellationToken cancellationToken);
 }
