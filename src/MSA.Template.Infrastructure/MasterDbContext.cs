@@ -97,7 +97,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
                             modifiedBy,
                             DateTimeOffset.UtcNow);
 
-                        await _auditEventService.AddAsync(auditEvent);
+                        await _auditEventService.AddEventAsync(auditEvent);
                     }
                 }
             }
