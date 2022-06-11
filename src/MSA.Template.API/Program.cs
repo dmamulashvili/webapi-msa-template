@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,6 +11,7 @@ using MSA.Template.Core;
 using MSA.Template.Infrastructure;
 using MSA.Template.Infrastructure.AmazonSQS;
 using MSA.Template.SharedKernel.Interfaces;
+using System.IO.Compression;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -88,6 +90,16 @@ builder.Services.AddDbContext<SlaveDbContext>(optionsBuilder =>
     optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SlaveDbContext)));
 });
 
+builder.Services.AddResponseCompression(options =>
+{
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.EnableForHttps = true;
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<MasterDbContext>());
 builder.Services.AddScoped<IdentityService>();
@@ -109,6 +121,8 @@ app.UseAuthorization();
 app.UseMiddleware<IdentityMiddleware>();
 
 app.MapControllers();
+
+app.UseResponseCompression();
 
 app.Services.GetRequiredService<MasterDbContext>().Database.Migrate();
 
