@@ -30,6 +30,8 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
                     {
                         hostConfigurator.AccessKey(amazonSqsConfiguration.AccessKey);
                         hostConfigurator.SecretKey(amazonSqsConfiguration.SecretKey);
+                        
+                        hostConfigurator.Scope(hostEnvironment.EnvironmentName, true);
                     });
 
                 amazonSqsBusFactoryConfigurator.MessageTopology.SetEntityNameFormatter(
@@ -37,12 +39,7 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
                         amazonSqsBusFactoryConfigurator.MessageTopology.EntityNameFormatter,
                         hostEnvironment.EnvironmentName));
 
-                var queueName = amazonSqsConfiguration.QueueName;
-
-                Guard.Against.NullOrWhiteSpace(queueName, nameof(queueName));
-
-                amazonSqsBusFactoryConfigurator.OverrideDefaultBusEndpointQueueName(
-                    $"{queueName}_{hostEnvironment.EnvironmentName}_TEMP");
+                Guard.Against.NullOrWhiteSpace(amazonSqsConfiguration.QueueName, nameof(amazonSqsConfiguration.QueueName));
 
                 amazonSqsBusFactoryConfigurator.UseMessageRetry(retryConfigurator =>
                 {
@@ -50,18 +47,25 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
                     retryConfigurator.Ignore<ArgumentNullException>();
                 });
 
-                amazonSqsBusFactoryConfigurator.ReceiveEndpoint($"{queueName}_{hostEnvironment.EnvironmentName}",
+                amazonSqsBusFactoryConfigurator.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfiguration.QueueName}",
                     endpointConfigurator =>
                     {
+                        endpointConfigurator.UseMessageRetry(r =>
+                        {
+                            r.Interval(5, TimeSpan.FromMinutes(1));
+                            r.Ignore<ArgumentNullException>();
+                        });
+                        
+                        endpointConfigurator.ConfigureConsumers(context);
+
+                        endpointConfigurator.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
+                        
                         endpointConfigurator.QueueAttributes.Add(QueueAttributeName.VisibilityTimeout,
                             TimeSpan.FromMinutes(20).TotalSeconds);
                         endpointConfigurator.QueueAttributes.Add(QueueAttributeName.ReceiveMessageWaitTimeSeconds, 20);
                         endpointConfigurator.QueueAttributes.Add(QueueAttributeName.MessageRetentionPeriod,
                             TimeSpan.FromDays(10).TotalSeconds);
                         endpointConfigurator.WaitTimeSeconds = 20;
-
-                        endpointConfigurator.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
-                        endpointConfigurator.ConfigureConsumers(context);
                     });
 
                 amazonSqsBusFactoryConfigurator.ConfigureEndpoints(context);
