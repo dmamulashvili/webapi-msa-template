@@ -41,12 +41,6 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
 
                 Guard.Against.NullOrWhiteSpace(amazonSqsConfiguration.QueueName, nameof(amazonSqsConfiguration.QueueName));
 
-                amazonSqsBusFactoryConfigurator.UseMessageRetry(retryConfigurator =>
-                {
-                    retryConfigurator.Interval(5, TimeSpan.FromMinutes(1));
-                    retryConfigurator.Ignore<ArgumentNullException>();
-                });
-
                 amazonSqsBusFactoryConfigurator.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfiguration.QueueName}",
                     endpointConfigurator =>
                     {
