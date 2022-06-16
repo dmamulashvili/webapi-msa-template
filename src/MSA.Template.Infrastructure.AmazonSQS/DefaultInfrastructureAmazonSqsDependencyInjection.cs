@@ -67,8 +67,6 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
                             TimeSpan.FromDays(10).TotalSeconds);
                         endpointConfigurator.WaitTimeSeconds = 20;
                     });
-
-                amazonSqsBusFactoryConfigurator.ConfigureEndpoints(context);
             });
         });
 
