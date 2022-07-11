@@ -20,46 +20,46 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
         {
             configurator.AddConsumers(typeof(OrderPaymentSucceededIntegrationEventHandler).Assembly);
 
-            configurator.UsingAmazonSqs((context, amazonSqsBusFactoryConfigurator) =>
+            configurator.UsingAmazonSqs((context, cfg) =>
             {
-                var amazonSqsConfiguration = configuration.GetSection(nameof(AmazonSqsConfiguration))
+                var amazonSqsConfig = configuration.GetSection(nameof(AmazonSqsConfiguration))
                     .Get<AmazonSqsConfiguration>();
 
-                amazonSqsBusFactoryConfigurator.Host(amazonSqsConfiguration.RegionEndpointSystemName,
-                    hostConfigurator =>
+                cfg.Host(amazonSqsConfig.RegionEndpointSystemName,
+                    h =>
                     {
-                        hostConfigurator.AccessKey(amazonSqsConfiguration.AccessKey);
-                        hostConfigurator.SecretKey(amazonSqsConfiguration.SecretKey);
+                        h.AccessKey(amazonSqsConfig.AccessKey);
+                        h.SecretKey(amazonSqsConfig.SecretKey);
                         
-                        hostConfigurator.Scope(hostEnvironment.EnvironmentName, true);
+                        h.Scope(hostEnvironment.EnvironmentName, true);
                     });
 
-                amazonSqsBusFactoryConfigurator.MessageTopology.SetEntityNameFormatter(
+                cfg.MessageTopology.SetEntityNameFormatter(
                     new AmazonSqsEnvironmentNameFormatter(
-                        amazonSqsBusFactoryConfigurator.MessageTopology.EntityNameFormatter,
+                        cfg.MessageTopology.EntityNameFormatter,
                         hostEnvironment.EnvironmentName));
 
-                Guard.Against.NullOrWhiteSpace(amazonSqsConfiguration.QueueName, nameof(amazonSqsConfiguration.QueueName));
+                Guard.Against.NullOrWhiteSpace(amazonSqsConfig.QueueName, nameof(amazonSqsConfig.QueueName));
 
-                amazonSqsBusFactoryConfigurator.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfiguration.QueueName}",
-                    endpointConfigurator =>
+                cfg.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.QueueName}",
+                    e =>
                     {
-                        endpointConfigurator.UseMessageRetry(r =>
+                        e.UseMessageRetry(r =>
                         {
                             r.Interval(5, TimeSpan.FromMinutes(1));
                             r.Ignore<ArgumentNullException>();
                         });
                         
-                        endpointConfigurator.ConfigureConsumers(context);
+                        e.ConfigureConsumers(context);
 
-                        endpointConfigurator.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
+                        e.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
                         
-                        endpointConfigurator.QueueAttributes.Add(QueueAttributeName.VisibilityTimeout,
+                        e.QueueAttributes.Add(QueueAttributeName.VisibilityTimeout,
                             TimeSpan.FromMinutes(20).TotalSeconds);
-                        endpointConfigurator.QueueAttributes.Add(QueueAttributeName.ReceiveMessageWaitTimeSeconds, 20);
-                        endpointConfigurator.QueueAttributes.Add(QueueAttributeName.MessageRetentionPeriod,
+                        e.QueueAttributes.Add(QueueAttributeName.ReceiveMessageWaitTimeSeconds, 20);
+                        e.QueueAttributes.Add(QueueAttributeName.MessageRetentionPeriod,
                             TimeSpan.FromDays(10).TotalSeconds);
-                        endpointConfigurator.WaitTimeSeconds = 20;
+                        e.WaitTimeSeconds = 20;
                     });
             });
         });
