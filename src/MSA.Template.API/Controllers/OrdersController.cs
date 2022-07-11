@@ -8,7 +8,7 @@ using MSA.Template.SharedKernel.Extensions;
 namespace MSA.Template.API.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
     private readonly IMediator _mediator;
