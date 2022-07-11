@@ -123,7 +123,7 @@ app.MapControllers();
 
 app.UseResponseCompression();
 
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/");
 
 app.Services.GetRequiredService<MasterDbContext>().Database.Migrate();
 
