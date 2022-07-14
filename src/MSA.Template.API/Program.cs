@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MSA.Template.API.Middlewares;
 using MSA.Template.API.Services;
+using MSA.Template.Audit;
 using MSA.Template.Core;
 using MSA.Template.Infrastructure;
 using MSA.Template.Infrastructure.AmazonSQS;
@@ -79,6 +80,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 builder.Services.AddMasstransitUsingAmazonSqs(builder.Configuration, builder.Environment);
+builder.Services.AddAuditUsingMassTransit();
 
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
