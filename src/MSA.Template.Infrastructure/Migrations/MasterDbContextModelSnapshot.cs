@@ -18,7 +18,7 @@ namespace MSA.Template.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -36,6 +36,13 @@ namespace MSA.Template.Infrastructure.Migrations
                     b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTimeOffset>("DateModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -49,15 +56,12 @@ namespace MSA.Template.Infrastructure.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Order", "Default");
+                    b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("MSA.Template.Core.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("MSA.Template.Core.OrderAggregate.OrderLine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,9 +83,11 @@ namespace MSA.Template.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ItemId");
+
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderLine", (string)null);
                 });
 
             modelBuilder.Entity("MSA.Template.Infrastructure.Idempotency.ClientRequest", b =>
@@ -102,16 +108,16 @@ namespace MSA.Template.Infrastructure.Migrations
                     b.ToTable("ClientRequest", "Default");
                 });
 
-            modelBuilder.Entity("MSA.Template.Core.OrderAggregate.OrderItem", b =>
+            modelBuilder.Entity("MSA.Template.Core.OrderAggregate.OrderLine", b =>
                 {
                     b.HasOne("MSA.Template.Core.OrderAggregate.Order", null)
-                        .WithMany("OrderItems")
+                        .WithMany("OrderLines")
                         .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("MSA.Template.Core.OrderAggregate.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("OrderLines");
                 });
 #pragma warning restore 612, 618
         }

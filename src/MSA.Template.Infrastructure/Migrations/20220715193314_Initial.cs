@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MSA.Template.Infrastructure.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,17 +30,17 @@ namespace MSA.Template.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Order",
-                schema: "Default",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     OrderStatus = table.Column<int>(type: "integer", nullable: false),
                     OrderDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Address = table.Column<Address>(type: "jsonb", nullable: false),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    DateModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    DateModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace MSA.Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItem",
+                name: "OrderLine",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -60,18 +60,22 @@ namespace MSA.Template.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.PrimaryKey("PK_OrderLine", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Order_OrderId",
+                        name: "FK_OrderLine_Order_OrderId",
                         column: x => x.OrderId,
-                        principalSchema: "Default",
                         principalTable: "Order",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderId",
-                table: "OrderItem",
+                name: "IX_OrderLine_ItemId",
+                table: "OrderLine",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderLine_OrderId",
+                table: "OrderLine",
                 column: "OrderId");
         }
 
@@ -82,11 +86,10 @@ namespace MSA.Template.Infrastructure.Migrations
                 schema: "Default");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "OrderLine");
 
             migrationBuilder.DropTable(
-                name: "Order",
-                schema: "Default");
+                name: "Order");
         }
     }
 }
