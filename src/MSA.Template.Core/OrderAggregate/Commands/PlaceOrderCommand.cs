@@ -4,24 +4,23 @@ using MSA.Template.SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
-[DataContract]
 public class PlaceOrderCommand : BaseCommand<bool>
 {
 
-    public PlaceOrderCommand(string city, string street, IEnumerable<OrderItemDTO> orderItems)
+    public PlaceOrderCommand(string city, string street, IEnumerable<OrderLineDto> orderLines)
     {
         City = city;
         Street = street;
-        OrderItems = orderItems;
+        OrderLines = orderLines;
     }
 
-    [DataMember] public string City { get; private set; }
+    public string City { get; private set; }
 
-    [DataMember] public string Street { get; private set; }
+    public string Street { get; private set; }
 
-    [DataMember] public IEnumerable<OrderItemDTO> OrderItems { get; private set; }
+    public IEnumerable<OrderLineDto> OrderLines { get; private set; }
 
-    public record OrderItemDTO
+    public record OrderLineDto
     {
         public int ItemId { get; init; }
 

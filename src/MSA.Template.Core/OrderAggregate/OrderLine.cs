@@ -2,9 +2,9 @@ using MSA.Template.SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate;
 
-public class OrderItem : BaseEntity<int>
+public class OrderLine : BaseEntity<int>
 {
-    public OrderItem(int itemId, decimal itemPrice, int quantity)
+    public OrderLine(int itemId, decimal itemPrice, int quantity)
     {
         ItemId = itemId;
         ItemPrice = itemPrice;

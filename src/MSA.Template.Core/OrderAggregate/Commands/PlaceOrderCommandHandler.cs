@@ -11,28 +11,23 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, bo
 {
     private readonly IRepository<Order, Guid> _repository;
 
-    private readonly IIdentityService _identityService;
-
     private readonly ILogger<PlaceOrderCommandHandler> _logger;
 
     public PlaceOrderCommandHandler(IRepository<Order, Guid> repository,
-        IIdentityService identityService,
         ILogger<PlaceOrderCommandHandler> logger)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public override async Task<bool> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
     {
-        var userId = _identityService.GetUserIdentity();
         var address = new Address(command.City, command.Street);
-        var order = Order.CreateNewDraft(userId, address);
+        var order = Order.CreateNewDraft(address);
 
-        foreach (var item in command.OrderItems)
+        foreach (var item in command.OrderLines)
         {
-            order.AddOrderItem(item.ItemId, 1, item.Quantity);
+            order.AddOrderLine(item.ItemId, 1, item.Quantity);
         }
 
         order.MarkAsPlaced();
