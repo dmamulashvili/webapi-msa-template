@@ -6,19 +6,16 @@ namespace MSA.Template.IntegrationEvents;
 
 public class OrderPlacedIntegrationEvent : BaseIntegrationEvent
 {
-    public OrderPlacedIntegrationEvent(Guid correlationId, Guid orderId, string? userId, DateTimeOffset orderDate,
+    public OrderPlacedIntegrationEvent(Guid correlationId, Guid orderId, DateTimeOffset orderDate,
         IReadOnlyCollection<OrderLine> orderLines)
     {
         CorrelationId = correlationId;
         OrderId = orderId;
-        UserId = userId;
         OrderDate = orderDate;
         OrderLines = orderLines;
     }
 
     public Guid OrderId { get; private set; }
-
-    public string? UserId { get; private set; }
 
     public DateTimeOffset OrderDate { get; private set; }
 

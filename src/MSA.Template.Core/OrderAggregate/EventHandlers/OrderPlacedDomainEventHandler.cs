@@ -27,9 +27,8 @@ public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedD
         var orderPlacedIntegrationEvent = new OrderPlacedIntegrationEvent(
             @event.Order.CorrelationId,
             @event.Order.Id,
-            @event.Order.UserId.ToString(),
             @event.Order.OrderDate,
-            @event.Order.OrderItems.Select(x =>
+            @event.Order.OrderLines.Select(x =>
                 new OrderPlacedIntegrationEvent.OrderLine(
                     x.ItemId,
                     x.ItemPrice,
