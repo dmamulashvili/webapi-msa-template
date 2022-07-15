@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MSA.Template.Infrastructure.AmazonSQS.Configuration;
-using MSA.Template.Infrastructure.AmazonSQS.Formatters;
 using MSA.Template.IntegrationEventHandlers;
 using MSA.Template.IntegrationEventHandlers.Filters;
 
@@ -33,11 +32,6 @@ public static class DefaultInfrastructureAmazonSqsDependencyInjection
                         
                         h.Scope(hostEnvironment.EnvironmentName, true);
                     });
-
-                cfg.MessageTopology.SetEntityNameFormatter(
-                    new AmazonSqsEnvironmentNameFormatter(
-                        cfg.MessageTopology.EntityNameFormatter,
-                        hostEnvironment.EnvironmentName));
 
                 Guard.Against.NullOrWhiteSpace(amazonSqsConfig.QueueName, nameof(amazonSqsConfig.QueueName));
 
