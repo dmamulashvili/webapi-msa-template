@@ -9,7 +9,7 @@ using MSA.Template.SharedKernel.Extensions;
 
 namespace MSA.Template.Core.Behaviors;
 
-public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger;
     private readonly IValidator<TRequest>[] _validators;
