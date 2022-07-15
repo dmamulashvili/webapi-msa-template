@@ -2,8 +2,9 @@ namespace MSA.Template.Core.OrderAggregate;
 
 public enum OrderStatus
 {
-    Draft,
-    Placed,
-    Paid,
-    Shipped
+    Draft = 0,
+    Placed = 1,
+    Paid = 5,
+    Shipped = 55,
+    Canceled = 9
 }
