@@ -24,7 +24,7 @@ public class OrdersController : ControllerBase
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> PlaceOrderAsync([FromBody] PlaceOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
+    public async Task<IActionResult> PlaceOrderAsync([FromBody] PlaceOrderCommand command, [FromHeader(Name = "x-request-id")] string requestId)
     {
         bool commandResult = false;
 
