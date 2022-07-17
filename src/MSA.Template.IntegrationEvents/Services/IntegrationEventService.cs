@@ -1,9 +1,9 @@
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MSA.Template.SharedKernel;
-using MSA.Template.SharedKernel.IntegrationEvents;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel;
+using SharedKernel.IntegrationEvents;
+using SharedKernel.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading;

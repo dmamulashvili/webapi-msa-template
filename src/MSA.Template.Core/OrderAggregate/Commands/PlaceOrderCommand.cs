@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using MSA.Template.SharedKernel;
+using SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 

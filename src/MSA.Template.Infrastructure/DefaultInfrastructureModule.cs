@@ -1,7 +1,7 @@
 using Autofac;
 using MSA.Template.Infrastructure.Data;
 using MSA.Template.Infrastructure.Idempotency;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure;
 

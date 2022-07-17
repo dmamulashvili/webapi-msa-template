@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MSA.Template.SharedKernel.Exceptions;
-using MSA.Template.SharedKernel.Extensions;
+using SharedKernel.Exceptions;
+using SharedKernel.Extensions;
 
 namespace MSA.Template.Core.Behaviors;
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MSA.Template.Core;
 using MSA.Template.Core.OrderAggregate.Commands;
-using MSA.Template.SharedKernel.Extensions;
+using SharedKernel.Extensions;
 
 namespace MSA.Template.API.Controllers;
 

@@ -1,8 +1,8 @@
 using MSA.Template.Core.OrderAggregate.Events;
 using MSA.Template.IntegrationEvents;
-using MSA.Template.SharedKernel;
-using MSA.Template.SharedKernel.IntegrationEvents;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel;
+using SharedKernel.IntegrationEvents;
+using SharedKernel.Interfaces;
 using System;
 using System.Linq;
 using System.Threading;

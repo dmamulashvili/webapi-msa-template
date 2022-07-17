@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MSA.Template.SharedKernel.Extensions;
+using SharedKernel.Extensions;
 
 namespace MSA.Template.Core.Behaviors;
 

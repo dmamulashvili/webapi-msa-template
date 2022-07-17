@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using MSA.Template.SharedKernel.Exceptions;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Exceptions;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure.Idempotency;
 

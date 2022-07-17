@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MSA.Template.SharedKernel;
-using MSA.Template.SharedKernel.Exceptions;
-using MSA.Template.SharedKernel.Extensions;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel;
+using SharedKernel.Exceptions;
+using SharedKernel.Extensions;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Core;
 

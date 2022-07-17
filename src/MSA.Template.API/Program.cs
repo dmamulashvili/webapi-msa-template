@@ -16,8 +16,8 @@ using MSA.Template.Infrastructure;
 using MSA.Template.IntegrationEventHandlers;
 using MSA.Template.IntegrationEventHandlers.Filters;
 using MSA.Template.IntegrationEvents.Services;
-using MSA.Template.SharedKernel.IntegrationEvents;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.IntegrationEvents;
+using SharedKernel.Interfaces;
 using SharedKernel.Audit.Interfaces;
 using System.IO.Compression;
 using System.Text;
@@ -152,7 +152,7 @@ static class CustomExtensionsMethods
                 o.QueryDelay = TimeSpan.FromSeconds(20);
 
                 o.UsePostgres();
-                o.UseBusOutbox();
+                o.UseBusOutbox(bo => bo.DisableDeliveryService());
                 o.DisableInboxCleanupService();
             });
 

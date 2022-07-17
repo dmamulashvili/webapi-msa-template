@@ -1,4 +1,4 @@
-using MSA.Template.SharedKernel;
+using SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate;
 

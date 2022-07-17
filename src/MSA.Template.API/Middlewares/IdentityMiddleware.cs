@@ -1,4 +1,4 @@
-﻿using MSA.Template.SharedKernel.Interfaces;
+﻿using SharedKernel.Interfaces;
 using System.Security.Claims;
 
 namespace MSA.Template.API.Middlewares;

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using MSA.Template.SharedKernel;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure.Data;
 

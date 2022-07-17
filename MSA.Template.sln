@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSA.Template.Core", "src\MS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSA.Template.Infrastructure", "src\MSA.Template.Infrastructure\MSA.Template.Infrastructure.csproj", "{43DE5F9F-5704-4B00-8A34-CB3D59E10F08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSA.Template.SharedKernel", "src\MSA.Template.SharedKernel\MSA.Template.SharedKernel.csproj", "{F3BD153D-B8D5-4114-B94D-6715E2F4E300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "src\SharedKernel\SharedKernel.csproj", "{F3BD153D-B8D5-4114-B94D-6715E2F4E300}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EE0FF9F9-8286-40F9-ABC4-B1094EDF912E}"
 EndProject

@@ -1,4 +1,4 @@
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.API.Services;
 

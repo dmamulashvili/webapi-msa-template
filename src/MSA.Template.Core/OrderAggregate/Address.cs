@@ -1,6 +1,6 @@
+using SharedKernel;
 using System;
 using System.Collections.Generic;
-using MSA.Template.SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate;
 

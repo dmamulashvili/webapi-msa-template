@@ -1,4 +1,4 @@
-using MSA.Template.SharedKernel;
+using SharedKernel;
 using System;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;

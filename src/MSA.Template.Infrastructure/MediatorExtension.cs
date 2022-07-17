@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure;
 

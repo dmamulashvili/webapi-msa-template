@@ -1,5 +1,5 @@
 using MSA.Template.Core.OrderAggregate.Events;
-using MSA.Template.SharedKernel;
+using SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

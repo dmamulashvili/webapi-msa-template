@@ -1,7 +1,7 @@
 using Ardalis.GuardClauses;
 using MassTransit;
-using MSA.Template.SharedKernel.IntegrationEvents;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.IntegrationEvents;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationEventHandlers.Filters;
 

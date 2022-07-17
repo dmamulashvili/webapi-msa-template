@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using MSA.Template.SharedKernel;
-using MSA.Template.SharedKernel.Exceptions;
-using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel;
+using SharedKernel.Exceptions;
+using SharedKernel.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

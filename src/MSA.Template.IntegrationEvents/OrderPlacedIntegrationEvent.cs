@@ -1,4 +1,4 @@
-using MSA.Template.SharedKernel;
+using SharedKernel;
 using System;
 using System.Collections.Generic;
 
