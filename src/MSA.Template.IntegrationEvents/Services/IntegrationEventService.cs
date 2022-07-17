@@ -42,7 +42,7 @@ public class IntegrationEventService : IIntegrationEventService
             await publishEndpoint.Publish(@event, @event.GetType(), c =>
             {
                 c.CorrelationId = @event.CorrelationId;
-                c.InitiatorId = @event.InitiatorId;
+                c.InitiatorId = _identityService.GetUserIdentity();
             }, cancellationToken);
         }
 
