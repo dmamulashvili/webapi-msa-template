@@ -28,11 +28,11 @@ public class OrdersController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> PlaceOrderAsync([FromBody] PlaceOrderCommand command, [FromHeader(Name = "x-request-id")] string requestId)
     {
-        bool commandResult = false;
+        var commandResult = string.Empty;
 
         if (Guid.TryParse(requestId, out Guid correlationId) && correlationId != Guid.Empty)
         {
-            var identifiedCommand = new IdentifiedCommand<PlaceOrderCommand, bool>(command, correlationId);
+            var identifiedCommand = new IdentifiedCommand<PlaceOrderCommand, string>(command, correlationId);
 
             _logger.LogInformation(
                 "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
@@ -44,12 +44,12 @@ public class OrdersController : ControllerBase
             commandResult = await _mediator.Send(identifiedCommand);
         }
 
-        if (!commandResult)
+        if (string.IsNullOrWhiteSpace(commandResult))
         {
             return BadRequest();
         }
 
-        return Ok();
+        return Ok(commandResult);
     }
 
     [HttpPut("cancel")]

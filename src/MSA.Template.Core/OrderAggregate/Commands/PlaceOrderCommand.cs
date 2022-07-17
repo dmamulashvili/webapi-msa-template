@@ -4,7 +4,7 @@ using MSA.Template.SharedKernel;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
-public class PlaceOrderCommand : BaseCommand<bool>
+public class PlaceOrderCommand : BaseCommand<string>
 {
 
     public PlaceOrderCommand(string city, string street, IEnumerable<OrderLineDto> orderLines)

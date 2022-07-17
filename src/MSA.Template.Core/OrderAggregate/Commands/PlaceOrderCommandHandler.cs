@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
-public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, bool>
+public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, string>
 {
     private readonly IRepository<Order, Guid> _repository;
 
@@ -20,7 +20,7 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, bo
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public override async Task<bool> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
+    public override async Task<string> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
     {
         var address = new Address(command.City, command.Street);
         var order = Order.CreateNewDraft(address);
@@ -36,6 +36,8 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, bo
 
         await _repository.AddAsync(order);
 
-        return await _repository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+        await _repository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+        return order.Id.ToString();
     }
 }
