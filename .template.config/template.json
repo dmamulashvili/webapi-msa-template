@@ -2,7 +2,7 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "Dimitri Mamulashvili",
   "classifications": [ "Web", "WebAPI", "Microservice" ],
-  "identity": "MSCA.Template",
+  "identity": "MSA.Template",
   "name": "ASP.NET Core Web API Microservice Template",
   "shortName": "webapi-msa",
   "sourceName": "MSA.Template",
