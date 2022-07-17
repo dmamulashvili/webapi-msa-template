@@ -1,16 +1,24 @@
+using Amazon.SQS;
+using Ardalis.GuardClauses;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MSA.Template.API.Configuration;
 using MSA.Template.API.Middlewares;
 using MSA.Template.API.Services;
-using MSA.Template.Audit;
+using MSA.Template.Audit.Interfaces;
+using MSA.Template.Audit.Services;
 using MSA.Template.Core;
 using MSA.Template.Infrastructure;
-using MSA.Template.Infrastructure.AmazonSQS;
+using MSA.Template.IntegrationEventHandlers;
+using MSA.Template.IntegrationEventHandlers.Filters;
+using MSA.Template.IntegrationEvents.Services;
+using MSA.Template.SharedKernel.IntegrationEvents;
 using MSA.Template.SharedKernel.Interfaces;
 using System.IO.Compression;
 using System.Text;
@@ -79,9 +87,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new DefaultInfrastructureModule());
 });
 
-builder.Services.AddMasstransitUsingAmazonSqs(builder.Configuration, builder.Environment);
-builder.Services.AddAuditUsingMassTransit();
-
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
     optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(nameof(MasterDbContext)));
@@ -91,6 +96,10 @@ builder.Services.AddDbContext<SlaveDbContext>(optionsBuilder =>
 {
     optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SlaveDbContext)));
 });
+
+builder.Services.AddMasstransitUsingAmazonSqs(builder.Configuration, builder.Environment);
+builder.Services.AddScoped<IIntegrationEventService, IntegrationEventService>();
+builder.Services.AddScoped<IAuditEventService, AuditEventService>();
 
 builder.Services.AddResponseCompression(options =>
 {
@@ -130,3 +139,65 @@ app.MapHealthChecks("/");
 app.Services.GetRequiredService<MasterDbContext>().Database.Migrate();
 
 app.Run();
+
+
+static class CustomExtensionsMethods
+{
+    public static IServiceCollection AddMasstransitUsingAmazonSqs(this IServiceCollection services,
+        IConfiguration configuration, IHostEnvironment hostEnvironment)
+    {
+        services.AddMassTransit(configurator =>
+        {
+            configurator.AddEntityFrameworkOutbox<MasterDbContext>(o =>
+            {
+                o.QueryDelay = TimeSpan.FromSeconds(20);
+
+                o.UsePostgres();
+                o.UseBusOutbox();
+                o.DisableInboxCleanupService();
+            });
+
+            configurator.AddConsumers(typeof(OrderPaymentSucceededIntegrationEventHandler).Assembly);
+
+            configurator.UsingAmazonSqs((context, cfg) =>
+            {
+                var amazonSqsConfig = configuration.GetSection(nameof(AmazonSqsConfiguration))
+                    .Get<AmazonSqsConfiguration>();
+
+                cfg.Host(amazonSqsConfig.RegionEndpointSystemName,
+                    h =>
+                    {
+                        h.AccessKey(amazonSqsConfig.AccessKey);
+                        h.SecretKey(amazonSqsConfig.SecretKey);
+
+                        h.Scope(hostEnvironment.EnvironmentName, true);
+                    });
+
+                Guard.Against.NullOrWhiteSpace(amazonSqsConfig.QueueName, nameof(amazonSqsConfig.QueueName));
+
+                cfg.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.QueueName}",
+                    e =>
+                    {
+                        e.UseMessageRetry(r =>
+                        {
+                            r.Interval(5, TimeSpan.FromMinutes(1));
+                            r.Ignore<ArgumentNullException>();
+                        });
+
+                        e.ConfigureConsumers(context);
+
+                        e.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
+
+                        e.QueueAttributes.Add(QueueAttributeName.VisibilityTimeout,
+                            TimeSpan.FromMinutes(20).TotalSeconds);
+                        e.QueueAttributes.Add(QueueAttributeName.ReceiveMessageWaitTimeSeconds, 20);
+                        e.QueueAttributes.Add(QueueAttributeName.MessageRetentionPeriod,
+                            TimeSpan.FromDays(10).TotalSeconds);
+                        e.WaitTimeSeconds = 20;
+                    });
+            });
+        });
+
+        return services;
+    }
+}
