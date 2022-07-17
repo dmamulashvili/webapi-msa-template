@@ -51,6 +51,21 @@ public class MasterDbContext : DbContext, IUnitOfWork
         modelBuilder.AddOutboxStateEntity();
     }
 
+    public Task SaveCorrelationAsync(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var modifiedBy = _identityService.GetUserIdentity();
+        
+        foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
+        {
+            if (item.State == EntityState.Modified || item.State == EntityState.Added)
+            {
+                item.Entity.SetCorrelationId(_correlationId);
+            }
+        }
+        
+        return Task.CompletedTask;
+    }
+
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dispatch Domain Events collection. 

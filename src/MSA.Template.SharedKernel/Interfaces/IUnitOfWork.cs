@@ -13,7 +13,8 @@ public interface IUnitOfWork : IDisposable
     Task<IDbContextTransaction?> BeginTransactionAsync(CancellationToken cancellationToken);
     Task CommitTransactionAsync(IDbContextTransaction? transaction);
     Task RollbackTransaction();
-    
+
+    Task SaveCorrelationAsync(CancellationToken cancellationToken = default(CancellationToken));
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
     Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken));

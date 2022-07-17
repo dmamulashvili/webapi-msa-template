@@ -2,6 +2,7 @@ using MSA.Template.Core.OrderAggregate.Events;
 using MSA.Template.IntegrationEvents;
 using MSA.Template.SharedKernel;
 using MSA.Template.SharedKernel.IntegrationEvents;
+using MSA.Template.SharedKernel.Interfaces;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,19 +12,22 @@ namespace MSA.Template.Core.OrderAggregate.EventHandlers;
 
 public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedDomainEvent>
 {
+    private readonly IRepository<Order, Guid> _repository;
     private readonly IIntegrationEventService _integrationEventService;
 
     public OrderPlacedDomainEventHandler(
-        IIntegrationEventService integrationEventService
-    )
+        IIntegrationEventService integrationEventService, IRepository<Order, Guid> repository)
     {
         _integrationEventService =
             integrationEventService ?? throw new ArgumentNullException(nameof(integrationEventService));
+        _repository = repository;
     }
 
     // INFO: e.g. publish fot Notification API to notify customer about succeeded order placement.
-    public override Task Handle(OrderPlacedDomainEvent @event, CancellationToken cancellationToken)
+    public override async Task Handle(OrderPlacedDomainEvent @event, CancellationToken cancellationToken)
     {
+        await _repository.UnitOfWork.SaveCorrelationAsync(cancellationToken);
+        
         var orderPlacedIntegrationEvent = new OrderPlacedIntegrationEvent(
             @event.Order.CorrelationId,
             @event.Order.Id,
@@ -33,7 +37,7 @@ public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedD
                     x.ItemId,
                     x.ItemPrice,
                     x.Quantity)).ToList());
-        
-        return _integrationEventService.AddEventAsync(orderPlacedIntegrationEvent);
+
+        await _integrationEventService.AddEventAsync(orderPlacedIntegrationEvent);
     }
 }
