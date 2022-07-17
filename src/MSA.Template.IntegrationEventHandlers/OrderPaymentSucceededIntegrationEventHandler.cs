@@ -1,8 +1,8 @@
+using IntegrationEvents;
 using MassTransit;
 using MediatR;
 using MSA.Template.Core;
 using MSA.Template.Core.OrderAggregate.Commands;
-using MSA.Template.IntegrationEvents;
 using SharedKernel.IntegrationEvents;
 
 namespace MSA.Template.IntegrationEventHandlers;

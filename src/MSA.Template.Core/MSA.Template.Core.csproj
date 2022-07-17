@@ -9,7 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\SharedKernel.Audit\SharedKernel.Audit.csproj" />
       <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
-      <ProjectReference Include="..\MSA.Template.IntegrationEvents\MSA.Template.IntegrationEvents.csproj" />
+      <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
     </ItemGroup>
 
     <ItemGroup>

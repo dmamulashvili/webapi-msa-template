@@ -1,7 +1,7 @@
 using SharedKernel;
 using System;
 
-namespace MSA.Template.IntegrationEvents;
+namespace IntegrationEvents;
 
 public class OrderPaidIntegrationEvent : BaseIntegrationEvent
 {

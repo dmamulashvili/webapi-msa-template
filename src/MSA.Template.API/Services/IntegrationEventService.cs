@@ -1,15 +1,9 @@
 using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SharedKernel;
 using SharedKernel.IntegrationEvents;
 using SharedKernel.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace MSA.Template.IntegrationEvents.Services;
+namespace MSA.Template.API.Services;
 
 public class IntegrationEventService : IIntegrationEventService
 {

@@ -2,7 +2,7 @@ using SharedKernel;
 using System;
 using System.Collections.Generic;
 
-namespace MSA.Template.IntegrationEvents;
+namespace IntegrationEvents;
 
 public class OrderPlacedIntegrationEvent : BaseIntegrationEvent
 {

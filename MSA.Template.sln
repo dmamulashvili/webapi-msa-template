@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "src\SharedK
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EE0FF9F9-8286-40F9-ABC4-B1094EDF912E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSA.Template.IntegrationEvents", "src\MSA.Template.IntegrationEvents\MSA.Template.IntegrationEvents.csproj", "{98C1987D-38BB-44A8-B9D5-F555B9B32F26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEvents", "src\IntegrationEvents\IntegrationEvents.csproj", "{98C1987D-38BB-44A8-B9D5-F555B9B32F26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F8FAEACC-EA11-442B-B52E-24134510D122}"
 EndProject

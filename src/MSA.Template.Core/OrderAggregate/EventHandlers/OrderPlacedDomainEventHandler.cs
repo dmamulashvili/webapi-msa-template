@@ -1,5 +1,5 @@
+using IntegrationEvents;
 using MSA.Template.Core.OrderAggregate.Events;
-using MSA.Template.IntegrationEvents;
 using SharedKernel;
 using SharedKernel.IntegrationEvents;
 using SharedKernel.Interfaces;
