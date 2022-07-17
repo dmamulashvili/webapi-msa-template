@@ -8,13 +8,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MSA.Template.Core\MSA.Template.Core.csproj" />
-      <ProjectReference Include="..\MSA.Template.Infrastructure.AmazonSQS\MSA.Template.Infrastructure.AmazonSQS.csproj" />
       <ProjectReference Include="..\MSA.Template.SharedKernel\MSA.Template.SharedKernel.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.4.0" />
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.0.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.7" />
       <PackageReference Include="Npgsql" Version="6.0.5" />
