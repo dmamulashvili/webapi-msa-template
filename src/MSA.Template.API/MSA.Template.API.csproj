@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="MassTransit.AmazonSQS" Version="8.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
           <PrivateAssets>all</PrivateAssets>
@@ -22,6 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MSA.Template.Core\MSA.Template.Core.csproj" />
       <ProjectReference Include="..\MSA.Template.Infrastructure\MSA.Template.Infrastructure.csproj" />
+      <ProjectReference Include="..\MSA.Template.IntegrationEventHandlers\MSA.Template.IntegrationEventHandlers.csproj" />
     </ItemGroup>
 
 </Project>
