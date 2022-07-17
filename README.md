@@ -24,8 +24,8 @@ dotnet new webapi-msa -o "MyCompany.MyProject.MyOrdering"
 Update PostgreSQL writer(Master) & reader(Slave) connection strings in case you're not using local one.
 ```json
   "ConnectionStrings": {
-    "MasterDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrdering;User Id=postgres;password=postgres",
-    "SlaveDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrdering;User Id=postgres;password=postgres;"
+    "MasterDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres",
+    "SlaveDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres;"
   },
 ```
 Create aws user with Programmatic access & read/write permissions to SNS/SQS.
