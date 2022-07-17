@@ -1,9 +1,8 @@
 using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using MSA.Template.Audit.Interfaces;
+using SharedKernel.Audit;
+using SharedKernel.Audit.Interfaces;
 
-namespace MSA.Template.Audit.Services;
+namespace MSA.Template.API.Services;
 
 public class AuditEventService : IAuditEventService
 {

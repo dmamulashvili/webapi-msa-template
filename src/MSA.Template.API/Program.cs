@@ -11,8 +11,6 @@ using Microsoft.OpenApi.Models;
 using MSA.Template.API.Configuration;
 using MSA.Template.API.Middlewares;
 using MSA.Template.API.Services;
-using MSA.Template.Audit.Interfaces;
-using MSA.Template.Audit.Services;
 using MSA.Template.Core;
 using MSA.Template.Infrastructure;
 using MSA.Template.IntegrationEventHandlers;
@@ -20,6 +18,7 @@ using MSA.Template.IntegrationEventHandlers.Filters;
 using MSA.Template.IntegrationEvents.Services;
 using MSA.Template.SharedKernel.IntegrationEvents;
 using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Audit.Interfaces;
 using System.IO.Compression;
 using System.Text;
 

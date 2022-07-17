@@ -1,4 +1,6 @@
-namespace MSA.Template.Audit.Events;
+using SharedKernel.Audit;
+
+namespace AuditEvents;
 
 public class EntityPropertyModifiedAuditEvent : BaseAuditEvent
 {

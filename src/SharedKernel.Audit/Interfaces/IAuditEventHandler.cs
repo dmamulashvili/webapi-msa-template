@@ -1,6 +1,6 @@
 using MassTransit;
 
-namespace MSA.Template.Audit.Interfaces;
+namespace SharedKernel.Audit.Interfaces;
 
 public interface IAuditEventHandler<in T> : IConsumer<Batch<T>>
     where T : BaseAuditEvent

@@ -1,12 +1,12 @@
+using AuditEvents;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using MSA.Template.Audit.Events;
-using MSA.Template.Audit.Interfaces;
 using MSA.Template.Infrastructure.EntityConfigurations;
 using MSA.Template.SharedKernel;
 using MSA.Template.SharedKernel.Interfaces;
+using SharedKernel.Audit.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,7 +54,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
     public Task SaveCorrelationAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         var modifiedBy = _identityService.GetUserIdentity();
-        
+
         foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
         {
             if (item.State == EntityState.Modified || item.State == EntityState.Added)
@@ -62,7 +62,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
                 item.Entity.SetCorrelationId(_correlationId);
             }
         }
-        
+
         return Task.CompletedTask;
     }
 

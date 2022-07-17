@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MSA.Template.Audit\MSA.Template.Audit.csproj" />
+      <ProjectReference Include="..\SharedKernel.Audit\SharedKernel.Audit.csproj" />
       <ProjectReference Include="..\MSA.Template.SharedKernel\MSA.Template.SharedKernel.csproj" />
       <ProjectReference Include="..\MSA.Template.IntegrationEvents\MSA.Template.IntegrationEvents.csproj" />
     </ItemGroup>

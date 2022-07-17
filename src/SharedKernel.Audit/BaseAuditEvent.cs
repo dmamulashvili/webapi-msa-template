@@ -1,6 +1,6 @@
-﻿using MSA.Template.Audit.Interfaces;
+﻿using SharedKernel.Audit.Interfaces;
 
-namespace MSA.Template.Audit;
+namespace SharedKernel.Audit;
 
 public abstract class BaseAuditEvent : IAuditEvent
 {
