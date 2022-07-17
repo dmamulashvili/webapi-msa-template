@@ -8,7 +8,7 @@ public class OrderLineEntityTypeConfiguration : IEntityTypeConfiguration<OrderLi
 {
     public void Configure(EntityTypeBuilder<OrderLine> builder)
     {
-        builder.ToTable(nameof(OrderLine));
+        builder.ToTable(nameof(OrderLine), MasterDbContext.DefaultSchema);
         builder.HasKey(p => p.Id);
         builder.HasIndex(p => p.ItemId);
     }

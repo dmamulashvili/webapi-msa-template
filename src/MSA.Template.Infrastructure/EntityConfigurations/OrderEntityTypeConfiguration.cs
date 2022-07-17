@@ -8,7 +8,7 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.ToTable(nameof(Order));
+        builder.ToTable(nameof(Order), MasterDbContext.DefaultSchema);
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Address).HasColumnType("jsonb");
 
