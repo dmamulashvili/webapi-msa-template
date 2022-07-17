@@ -62,10 +62,11 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
                 _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}",
                     transaction.TransactionId, typeName);
 
-                await _unitOfWork.CommitTransactionAsync(transaction);
-
                 await _integrationEventService.PublishEventsAsync(cancellationToken);
 
+                await _unitOfWork.CommitTransactionAsync(transaction);
+
+                // TODO: To enable Outbox on AuditEvents move _auditEventService.PublishEventsAsync before _unitOfWork.CommitTransactionAsync. Also view AuditEventService.cs
                 await _auditEventService.PublishEventsAsync(cancellationToken);
 
                 return response;

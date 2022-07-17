@@ -1,22 +1,21 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using MSA.Template.Audit.Events;
 using MSA.Template.Audit.Interfaces;
-using MSA.Template.Core.OrderAggregate;
 using MSA.Template.Infrastructure.EntityConfigurations;
-using MSA.Template.Infrastructure.Idempotency;
 using MSA.Template.SharedKernel;
 using MSA.Template.SharedKernel.Interfaces;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MSA.Template.Infrastructure;
 
 public class MasterDbContext : DbContext, IUnitOfWork
 {
-    public const string DefaultSchema = "Default";
+    public const string DefaultSchema = "Application";
 
     private readonly IMediator _mediator = null!;
     private readonly IIdentityService _identityService = null!;
@@ -29,8 +28,8 @@ public class MasterDbContext : DbContext, IUnitOfWork
     {
     }
 
-    public MasterDbContext(DbContextOptions<MasterDbContext> options, 
-        IMediator mediator, 
+    public MasterDbContext(DbContextOptions<MasterDbContext> options,
+        IMediator mediator,
         IIdentityService identityService,
         IAuditEventService auditEventService) : base(options)
     {
@@ -46,6 +45,10 @@ public class MasterDbContext : DbContext, IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClientRequestEntityTypeConfiguration).Assembly);
+
+        // modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
+        modelBuilder.AddOutboxStateEntity();
     }
 
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -64,10 +67,10 @@ public class MasterDbContext : DbContext, IUnitOfWork
         {
             if (item.State == EntityState.Modified || item.State == EntityState.Added)
             {
-                item.Entity.SetCorrelationId( _correlationId);
+                item.Entity.SetCorrelationId(_correlationId);
                 item.Entity.SetModifiedBy(modifiedBy.ToString());
                 item.Entity.SetDateModified(DateTimeOffset.UtcNow);
-                
+
                 if (item.State == EntityState.Added)
                 {
                     item.Entity.SetCreatedBy(modifiedBy.ToString());
@@ -75,7 +78,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
                 }
             }
         }
-        
+
         foreach (var item in base.ChangeTracker.Entries<BaseEntity<Guid>>())
         {
             if (item.State == EntityState.Modified)
