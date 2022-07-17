@@ -29,7 +29,7 @@ Update PostgreSQL writer(Master) & reader(Slave) connection strings in case you'
   },
 ```
 Create aws user with Programmatic access & read/write permissions to SNS/SQS.
->**Warning**
+>**Warning**  
 >The following characters are accepted in QueueName: alphanumeric characters, hyphens (-), and underscores (_).
 ```json
 "AmazonSqsConfiguration": {
