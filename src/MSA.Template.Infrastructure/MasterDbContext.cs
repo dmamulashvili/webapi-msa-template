@@ -53,8 +53,6 @@ public class MasterDbContext : DbContext, IUnitOfWork
 
     public Task SaveCorrelationAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        var modifiedBy = _identityService.GetUserIdentity();
-
         foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
         {
             if (item.State == EntityState.Modified || item.State == EntityState.Added)
