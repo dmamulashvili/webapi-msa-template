@@ -11,7 +11,7 @@ public class IdentityService : IIdentityService, IIdentityServiceProvider
         return _userIdentity ?? throw new ArgumentNullException(nameof(_userIdentity));
     }
 
-    public void SetIdentity(Guid userIdentity)
+    public void SetUserIdentity(Guid userIdentity)
     {
         _userIdentity = userIdentity;
     }

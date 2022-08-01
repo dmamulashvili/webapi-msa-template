@@ -23,7 +23,7 @@ public class IdentityMiddleware
         if (Guid.TryParse(_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 out var userIdentity))
         {
-            identityProviderService.SetIdentity(userIdentity);
+            identityProviderService.SetUserIdentity(userIdentity);
         }
 
         await _next(context);
