@@ -30,12 +30,12 @@ public class AuditEventService : IAuditEventService
     {
         // TODO: To enable OutBox uncomment below functionality and replace _eventBus with publishEndpoint. Also view TransactionBehaviour.cs
         // var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
-        foreach (var @event in _events)
+        foreach (var @events in _events.GroupBy(e => new {e.CorrelationId, e.InitiatorId}))
         {
-            await _eventBus.Publish(@event, @event.GetType(), c =>
+            await _eventBus.PublishBatch(@events, @events.First().GetType(), c =>
             {
-                c.CorrelationId = @event.CorrelationId;
-                c.InitiatorId = @event.InitiatorId;
+                c.CorrelationId = @events.Key.CorrelationId;
+                c.InitiatorId = @events.Key.InitiatorId;
             }, cancellationToken);
         }
     }
