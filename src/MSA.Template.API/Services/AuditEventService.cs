@@ -38,5 +38,7 @@ public class AuditEventService : IAuditEventService
                 c.InitiatorId = @events.Key.InitiatorId;
             }, cancellationToken);
         }
+        
+        _events.Clear();
     }
 }
