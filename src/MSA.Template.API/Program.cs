@@ -173,18 +173,20 @@ static class CustomExtensionsMethods
                 var amazonSqsConfig = configuration.GetSection(nameof(AmazonSqsConfiguration))
                     .Get<AmazonSqsConfiguration>();
 
+                Guard.Against.NullOrWhiteSpace(amazonSqsConfig.Scope, nameof(amazonSqsConfig.Scope));
+
                 cfg.Host(amazonSqsConfig.RegionEndpointSystemName,
                     h =>
                     {
                         h.AccessKey(amazonSqsConfig.AccessKey);
                         h.SecretKey(amazonSqsConfig.SecretKey);
 
-                        h.Scope(hostEnvironment.EnvironmentName, true);
+                        h.Scope($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}", true);
                     });
 
                 Guard.Against.NullOrWhiteSpace(amazonSqsConfig.QueueName, nameof(amazonSqsConfig.QueueName));
 
-                cfg.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.QueueName}",
+                cfg.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}_{amazonSqsConfig.QueueName}",
                     e =>
                     {
                         e.UseMessageRetry(r =>
