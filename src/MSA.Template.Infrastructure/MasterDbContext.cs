@@ -64,6 +64,30 @@ public class MasterDbContext : DbContext, IUnitOfWork
         return Task.CompletedTask;
     }
 
+    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        var modifiedBy = _identityService.GetUserIdentity();
+
+        foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
+        {
+            if (item.State == EntityState.Modified || item.State == EntityState.Added)
+            {
+                item.Entity.SetCorrelationId(_correlationId);
+                item.Entity.SetModifiedBy(modifiedBy.ToString());
+                item.Entity.SetDateModified(DateTimeOffset.UtcNow);
+
+                if (item.State == EntityState.Added)
+                {
+                    item.Entity.SetCreatedBy(modifiedBy.ToString());
+                    item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
+                }
+            }
+        }
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+        return result;
+    }
+
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dispatch Domain Events collection. 
