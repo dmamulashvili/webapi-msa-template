@@ -130,7 +130,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(cfg =>
+        {
+            cfg.DefaultModelsExpandDepth(-1); // Disable swagger schemas at bottom
+        }
+    );
 }
 
 app.UseCors("CorsPolicy");
