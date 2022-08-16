@@ -40,7 +40,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
 
             throw new DomainException(
                 $"Command Validation Errors for type {typeof(TRequest).Name}",
-                new ValidationException("Validation exception", failures));
+                new ValidationException(failures));
         }
 
         return await next();
