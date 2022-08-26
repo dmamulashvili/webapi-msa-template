@@ -35,7 +35,7 @@ public class OrderTest
 
         order.AddOrderLine(orderLine);
 
-        Assert.Equal(orderLine, order.OrderLines.Single());
+        Assert.Equal(orderLine, order.OrderLines.First());
     }
 
     [Fact]
