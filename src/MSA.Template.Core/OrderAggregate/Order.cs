@@ -1,5 +1,6 @@
 using MSA.Template.Core.OrderAggregate.Events;
 using SharedKernel;
+using SharedKernel.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,29 +25,30 @@ public class Order : BaseAggregateRoot<Guid>
     private readonly List<OrderLine> _orderLines = new List<OrderLine>();
     public IReadOnlyCollection<OrderLine> OrderLines => _orderLines;
 
-    public void AddOrderLine(int itemId, decimal itemPrice, int quantity)
+    public void AddOrderLine(OrderLine orderLine)
     {
-        var existingOrderLine = _orderLines.SingleOrDefault(o => o.ItemId == itemId);
+        var existingOrderLine = _orderLines.SingleOrDefault(o => o.ItemId == orderLine.ItemId);
 
         if (existingOrderLine != null)
         {
-            existingOrderLine.AddQuantity(quantity);
+            existingOrderLine.AddQuantity(orderLine.Quantity);
         }
         else
         {
-            var orderLine = new OrderLine(itemId, itemPrice, quantity);
             _orderLines.Add(orderLine);
         }
     }
 
     public void MarkAsPlaced()
     {
-        if (OrderStatus == OrderStatus.Draft)
+        if (OrderStatus != OrderStatus.Draft)
         {
-            AddDomainEvent(new OrderPlacedDomainEvent(this));
-
-            OrderStatus = OrderStatus.Placed;
+            throw new DomainException("Only Draft Order can be marked as Placed.");
         }
+        
+        AddDomainEvent(new OrderPlacedDomainEvent(this));
+
+        OrderStatus = OrderStatus.Placed;
     }
 
     public void MarkAsPaid()

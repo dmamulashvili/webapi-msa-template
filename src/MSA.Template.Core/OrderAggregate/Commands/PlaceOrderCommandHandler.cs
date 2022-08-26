@@ -27,7 +27,8 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, st
 
         foreach (var item in command.OrderLines)
         {
-            order.AddOrderLine(item.ItemId, 1, item.Quantity);
+            var orderLine = new OrderLine(item.ItemId, 1, item.Quantity);
+            order.AddOrderLine(orderLine);
         }
 
         order.MarkAsPlaced();
