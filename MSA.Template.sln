@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditEvents", "src\AuditEve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.Template.UnitTests", "tests\MSA.Template.UnitTests\MSA.Template.UnitTests.csproj", "{F7063697-DE83-4821-A087-404A7F26615A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.Template.IntegrationTests", "tests\MSA.Template.IntegrationTests\MSA.Template.IntegrationTests.csproj", "{D2141941-2EBA-46CB-B2A7-251C7ECED5E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{F7063697-DE83-4821-A087-404A7F26615A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7063697-DE83-4821-A087-404A7F26615A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7063697-DE83-4821-A087-404A7F26615A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2141941-2EBA-46CB-B2A7-251C7ECED5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2141941-2EBA-46CB-B2A7-251C7ECED5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2141941-2EBA-46CB-B2A7-251C7ECED5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2141941-2EBA-46CB-B2A7-251C7ECED5E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{4763FB2A-B1D7-46E6-B41D-1928741BAE42} = {F74BA517-A4FE-41C2-913F-4D6716C7DF90}
 		{D0D55A95-0B10-43D8-B4A1-241945615E1F} = {EE0FF9F9-8286-40F9-ABC4-B1094EDF912E}
 		{F7063697-DE83-4821-A087-404A7F26615A} = {F8FAEACC-EA11-442B-B52E-24134510D122}
+		{D2141941-2EBA-46CB-B2A7-251C7ECED5E3} = {F8FAEACC-EA11-442B-B52E-24134510D122}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC48EF07-D0EA-47B7-91F9-42D12D68FE25}
