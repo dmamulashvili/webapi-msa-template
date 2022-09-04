@@ -12,13 +12,13 @@ namespace MSA.Template.IntegrationTests.Repositories;
 public class OrderRepositoryTests
 {
     private OrderBuilder OrderBuilder { get; } = new();
-    private readonly MasterDbContext _dbContext;
+    private readonly MasterDbContext _masterDbContext;
     private readonly IRepository<Order, Guid> _repository;
 
     public OrderRepositoryTests(DatabaseFixture fixture)
     {
-        _dbContext = fixture.MasterDbContext;
-        _repository = new BaseRepository<Order, Guid>(_dbContext);
+        _masterDbContext = fixture.MasterDbContext;
+        _repository = new BaseRepository<Order, Guid>(_masterDbContext);
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class OrderRepositoryTests
         await _repository.AddAsync(newOrder);
         await _repository.UnitOfWork.SaveChangesAsync();
 
-        var orderFromDb = await _dbContext.FindAsync<Order>(newOrder.Id);
+        var orderFromDb = await _masterDbContext.FindAsync<Order>(newOrder.Id);
 
         Assert.NotNull(orderFromDb);
         Assert.Equal(newOrder.OrderStatus, orderFromDb!.OrderStatus);
@@ -40,8 +40,8 @@ public class OrderRepositoryTests
     public async Task Find_ExistingOrder_By_Id()
     {
         var existingOrder = OrderBuilder.CreateDraftOrder();
-        _dbContext.Add(existingOrder);
-        await _dbContext.SaveChangesAsync();
+        _masterDbContext.Add(existingOrder);
+        await _masterDbContext.SaveChangesAsync();
 
         var orderFromRepo = await _repository.FindByIdAsync(existingOrder.Id);
 
