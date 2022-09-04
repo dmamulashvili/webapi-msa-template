@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using MSA.Template.Core.OrderAggregate;
 using MSA.Template.Infrastructure;
 using MSA.Template.Infrastructure.Data;
@@ -8,7 +7,7 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationTests.Repositories;
 
-[Collection(nameof(DbContext))]
+[Collection(nameof(DatabaseFixture))]
 public class OrderRepositoryTests
 {
     private OrderBuilder OrderBuilder { get; } = new();
@@ -35,7 +34,7 @@ public class OrderRepositoryTests
         Assert.Equal(newOrder.OrderStatus, orderFromDb!.OrderStatus);
         Assert.Equal(newOrder.OrderDate, orderFromDb.OrderDate);
     }
-    
+
     [Fact]
     public async Task Find_ExistingOrder_By_Id()
     {

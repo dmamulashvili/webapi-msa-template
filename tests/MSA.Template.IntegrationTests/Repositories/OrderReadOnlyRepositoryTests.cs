@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MSA.Template.Core.OrderAggregate;
+﻿using MSA.Template.Core.OrderAggregate;
 using MSA.Template.Core.OrderAggregate.Specifications;
 using MSA.Template.Infrastructure;
 using MSA.Template.Infrastructure.Data;
@@ -9,7 +8,7 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationTests.Repositories;
 
-[Collection(nameof(DbContext))]
+[Collection(nameof(DatabaseFixture))]
 public class OrderReadOnlyRepositoryTests
 {
     private OrderBuilder OrderBuilder { get; } = new();
