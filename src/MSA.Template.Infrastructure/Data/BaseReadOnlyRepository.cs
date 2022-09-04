@@ -19,7 +19,7 @@ public class BaseReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity,
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<TEntity>> FindByAsync(ISpecification<TEntity> specification)
+    public async Task<List<TEntity>> FindByAsync(ISpecification<TEntity> specification)
     {
         return await ApplySpecification(specification).AsNoTracking().ToListAsync();
     }
