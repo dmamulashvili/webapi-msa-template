@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using MSA.Template.API.Services;
 using MSA.Template.Infrastructure;
+using SharedKernel.Audit.Interfaces;
 using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationTests.Fixtures;
@@ -13,12 +15,14 @@ public class MasterDbContextFixture : IDisposable
         var dbOptions = new DbContextOptionsBuilder<MasterDbContext>()
             .UseNpgsql("Server=localhost;Port=5432;Database=TestMSA.TemplateDb;User Id=postgres;password=postgres")
             .Options;
-        
+
+        var mediator = new Mock<IMediator>();
         var identityService = new IdentityService();
         ((IIdentityServiceProvider)identityService).SetUserIdentity(Guid.NewGuid());
-        
-        DbContext = new MasterDbContext(dbOptions, new Mediator(null!), identityService,
-            new AuditEventService(null!, null!));
+        var auditEventService = new Mock<IAuditEventService>();
+
+        DbContext = new MasterDbContext(dbOptions, mediator.Object, identityService,
+            auditEventService.Object);
 
         DbContext.Database.EnsureCreated();
     }
