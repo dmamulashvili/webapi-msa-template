@@ -13,7 +13,7 @@ public class MasterDbContextFixture : IDisposable
     public MasterDbContextFixture()
     {
         var dbOptions = new DbContextOptionsBuilder<MasterDbContext>()
-            .UseNpgsql("Server=localhost;Port=5432;Database=TestMSA.TemplateDb;User Id=postgres;password=postgres")
+            .UseNpgsql("Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres")
             .Options;
 
         var mediator = new Mock<IMediator>();
