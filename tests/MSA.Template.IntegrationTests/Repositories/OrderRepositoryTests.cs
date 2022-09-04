@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MSA.Template.Core.OrderAggregate;
 using MSA.Template.Infrastructure;
 using MSA.Template.Infrastructure.Data;
@@ -7,15 +8,16 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationTests.Repositories;
 
-public class OrderRepositoryTests : IClassFixture<MasterDbContextFixture>
+[Collection(nameof(DbContext))]
+public class OrderRepositoryTests
 {
     private OrderBuilder OrderBuilder { get; } = new();
     private readonly MasterDbContext _dbContext;
     private readonly IRepository<Order, Guid> _repository;
 
-    public OrderRepositoryTests(MasterDbContextFixture fixture)
+    public OrderRepositoryTests(DatabaseFixture fixture)
     {
-        _dbContext = fixture.DbContext;
+        _dbContext = fixture.MasterDbContext;
         _repository = new BaseRepository<Order, Guid>(_dbContext);
     }
 
