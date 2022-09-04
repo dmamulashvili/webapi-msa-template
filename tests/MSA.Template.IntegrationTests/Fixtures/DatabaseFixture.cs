@@ -8,9 +8,9 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationTests.Fixtures;
 
-public class MasterDbContextFixture : IDisposable
+public class DatabaseFixture : IDisposable
 {
-    public MasterDbContextFixture()
+    public DatabaseFixture()
     {
         var dbOptions = new DbContextOptionsBuilder<MasterDbContext>()
             .UseNpgsql("Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres")
@@ -21,16 +21,18 @@ public class MasterDbContextFixture : IDisposable
         ((IIdentityServiceProvider)identityService).SetUserIdentity(Guid.NewGuid());
         var auditEventService = new Mock<IAuditEventService>();
 
-        DbContext = new MasterDbContext(dbOptions, mediator.Object, identityService,
+        MasterDbContext = new MasterDbContext(dbOptions, mediator.Object, identityService,
             auditEventService.Object);
+        SlaveDbContext = new SlaveDbContext(dbOptions);
 
-        DbContext.Database.EnsureCreated();
+        MasterDbContext.Database.EnsureCreated();
     }
 
-    public MasterDbContext DbContext { get; private set; }
+    public MasterDbContext MasterDbContext { get; }
+    public SlaveDbContext SlaveDbContext { get; }
 
     public void Dispose()
     {
-        DbContext.Database.EnsureDeleted();
+        MasterDbContext.Database.EnsureDeleted();
     }
 }
