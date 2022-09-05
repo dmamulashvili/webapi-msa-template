@@ -7,18 +7,19 @@ namespace MSA.Template.Infrastructure;
 
 static class MediatorExtension
 {
-    public static async Task DispatchDomainEventsAsync(this IMediator mediator, MasterDbContext ctx)
+    public static async Task DispatchDomainEventsAsync(this IMediator mediator, MasterDbContext masterDbContext)
     {
-        var domainEntities = ctx.ChangeTracker
+        var domainEntities = masterDbContext.ChangeTracker
             .Entries<IEntity>()
-            .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
+            .Where(e => e.Entity.DomainEvents != null && e.Entity.DomainEvents.Any())
+            .ToList();
 
         var domainEvents = domainEntities
-            .SelectMany(x => x.Entity.DomainEvents)
+            .SelectMany(e => e.Entity.DomainEvents!)
             .ToList();
 
         domainEntities.ToList()
-            .ForEach(entity => entity.Entity.ClearDomainEvents());
+            .ForEach(e => e.Entity.ClearDomainEvents());
 
         foreach (var domainEvent in domainEvents)
             await mediator.Publish(domainEvent);
