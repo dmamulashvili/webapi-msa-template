@@ -32,11 +32,11 @@ public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedD
             @event.Order.CorrelationId,
             @event.Order.Id,
             @event.Order.OrderDate,
-            @event.Order.OrderLines.Select(x =>
+            @event.Order.OrderLines.Select(ol =>
                 new OrderPlacedIntegrationEvent.OrderLine(
-                    x.ItemId,
-                    x.ItemPrice,
-                    x.Quantity)).ToList());
+                    ol.ItemId,
+                    ol.ItemPrice,
+                    ol.Quantity)).ToList());
 
         await _integrationEventService.AddEventAsync(orderPlacedIntegrationEvent);
     }
