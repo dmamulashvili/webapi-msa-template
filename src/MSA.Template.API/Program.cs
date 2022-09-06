@@ -166,7 +166,7 @@ static class CustomExtensionsMethods
                 o.QueryDelay = TimeSpan.FromSeconds(20);
 
                 o.UsePostgres();
-                o.UseBusOutbox();
+                o.UseBusOutbox(b => b.DisableDeliveryService());
                 o.DisableInboxCleanupService();
             });
 
