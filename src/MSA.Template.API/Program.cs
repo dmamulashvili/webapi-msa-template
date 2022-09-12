@@ -20,13 +20,17 @@ using SharedKernel.IntegrationEvents;
 using SharedKernel.Interfaces;
 using System.IO.Compression;
 using System.Text;
+using MSA.Template.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<DomainExceptionFilterAttribute>();
+});
 builder.Services.AddRouting(options => { options.LowercaseUrls = true; });
 builder.Services.AddCors(options =>
 {
