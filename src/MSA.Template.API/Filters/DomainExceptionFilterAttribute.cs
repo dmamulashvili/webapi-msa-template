@@ -18,13 +18,7 @@ public class DomainExceptionFilterAttribute : ExceptionFilterAttribute
             }
             else
             {
-                context.Result = new ObjectResult(new
-                {
-                    context.Exception.Message
-                })
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                base.OnException(context);
             }
         }
     }
