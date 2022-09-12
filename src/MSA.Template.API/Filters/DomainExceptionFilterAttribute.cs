@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SharedKernel.Exceptions;
@@ -17,7 +18,13 @@ public class DomainExceptionFilterAttribute : ExceptionFilterAttribute
             }
             else
             {
-                context.Result = new UnprocessableEntityObjectResult(context.Exception.Message);
+                context.Result = new ObjectResult(new
+                {
+                    context.Exception.Message
+                })
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
     }
