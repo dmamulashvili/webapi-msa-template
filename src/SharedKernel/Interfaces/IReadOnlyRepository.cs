@@ -11,4 +11,6 @@ public interface IReadOnlyRepository<TEntity, in TId>
     Task<List<TEntity>> FindByAsync(ISpecification<TEntity> specification);
 
     Task<TEntity?> FindByIdAsync(TId id);
+    
+    Task<TEntity?> FindSingleByAsync(ISpecification<TEntity> specification);
 }
