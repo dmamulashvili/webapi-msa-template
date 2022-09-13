@@ -36,7 +36,7 @@ Create aws user with Programmatic access & read/write permissions to SNS/SQS.
     "AccessKey": "",
     "SecretKey": "",
     "RegionEndpointSystemName": "eu-central-1",
-    "Scope": "",
+    "Scope": "Development",
     "QueueName" : "MyCompany_MyProject_MyOrdering"
   },
 ```
