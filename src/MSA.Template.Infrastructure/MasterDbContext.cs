@@ -15,7 +15,7 @@ namespace MSA.Template.Infrastructure;
 
 public class MasterDbContext : DbContext, IUnitOfWork
 {
-    public const string DefaultSchema = "Application";
+    public const string DefaultSchema = "api";
 
     private readonly IMediator _mediator = null!;
     private readonly IIdentityService _identityService = null!;
