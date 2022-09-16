@@ -45,7 +45,7 @@ public class
         CancellationToken cancellationToken)
     {
         var alreadyExists = await _requestManager.ExistAsync(message.CorrelationId);
-        if (alreadyExists)
+        if (alreadyExists && !message.SkipIdempotency)
         {
             throw new DuplicateRequestException();
         }
