@@ -8,6 +8,7 @@ using SharedKernel;
 using SharedKernel.Interfaces;
 using SharedKernel.Audit.Interfaces;
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -132,8 +133,8 @@ public class MasterDbContext : DbContext, IUnitOfWork
                             entity.GetType().Name,
                             entity.Id.ToString(),
                             property.Name,
-                            original?.ToString(),
-                            current?.ToString(),
+                            original is not null ? JsonSerializer.Serialize(original) : null,
+                            current is not null ? JsonSerializer.Serialize(current) : null,
                             modifiedBy,
                             DateTimeOffset.UtcNow);
 
