@@ -50,7 +50,10 @@ public class
             throw new DuplicateRequestException();
         }
 
-        await _requestManager.CreateRequestForCommandAsync<TRequest>(message.CorrelationId);
+        if (!message.SkipIdempotency)
+        {
+            await _requestManager.CreateRequestForCommandAsync<TRequest>(message.CorrelationId);
+        }
 
         var command = message.Command;
         var commandName = command.GetGenericTypeName();
