@@ -1,9 +1,9 @@
-using SharedKernel;
 using System;
+using SharedKernel.IntegrationEvents;
 
 namespace IntegrationEvents;
 
-public class OrderPaymentSucceededIntegrationEvent : BaseIntegrationEvent
+public class OrderPaymentSucceededIntegrationEvent : IIntegrationEvent
 {
     public OrderPaymentSucceededIntegrationEvent(Guid orderId)
     {

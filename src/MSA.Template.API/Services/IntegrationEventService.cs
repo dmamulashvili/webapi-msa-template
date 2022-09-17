@@ -1,6 +1,5 @@
 using Ardalis.GuardClauses;
 using MassTransit;
-using SharedKernel;
 using SharedKernel.IntegrationEvents;
 using SharedKernel.Interfaces;
 
@@ -9,12 +8,13 @@ namespace MSA.Template.API.Services;
 public class IntegrationEventService : IIntegrationEventService
 {
     private readonly IServiceProvider _serviceProvider;
+
     // private readonly IBus _eventBus;
     private readonly IIdentityService _identityService;
     private readonly ILogger<IntegrationEventService> _logger;
     private readonly List<IIntegrationEvent> _events = new List<IIntegrationEvent>();
 
-    public IntegrationEventService(IServiceProvider serviceProvider, 
+    public IntegrationEventService(IServiceProvider serviceProvider,
         // IBus eventBus, 
         IIdentityService identityService,
         ILogger<IntegrationEventService> logger)
@@ -25,7 +25,7 @@ public class IntegrationEventService : IIntegrationEventService
         _logger = Guard.Against.Null(logger);
     }
 
-    public Task AddEventAsync(BaseIntegrationEvent @event)
+    public Task AddEventAsync(IIntegrationEvent @event)
     {
         _events.Add(@event);
         return Task.CompletedTask;

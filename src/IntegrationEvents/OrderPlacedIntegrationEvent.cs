@@ -1,10 +1,10 @@
-using SharedKernel;
 using System;
 using System.Collections.Generic;
+using SharedKernel.IntegrationEvents;
 
 namespace IntegrationEvents;
 
-public class OrderPlacedIntegrationEvent : BaseIntegrationEvent
+public class OrderPlacedIntegrationEvent : IIntegrationEvent
 {
     public OrderPlacedIntegrationEvent(Guid orderId, DateTimeOffset orderDate,
         IReadOnlyCollection<OrderLine> orderLines)

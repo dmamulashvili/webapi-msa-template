@@ -6,6 +6,6 @@ namespace SharedKernel.IntegrationEvents;
 
 public interface IIntegrationEventService
 {
-    Task AddEventAsync(BaseIntegrationEvent @event);
+    Task AddEventAsync(IIntegrationEvent @event);
     Task PublishEventsAsync(Guid correlationId, CancellationToken cancellationToken);
 }
