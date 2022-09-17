@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using IntegrationEvents;
 using MassTransit;
 using MediatR;
@@ -18,10 +19,12 @@ public class OrderPaymentSucceededIntegrationEventHandler : IIntegrationEventHan
 
     public Task Consume(ConsumeContext<OrderPaymentSucceededIntegrationEvent> context)
     {
-        var message = context.Message;
+        Guard.Against.Null(context.CorrelationId);
+        
+        var @event = context.Message;
 
         return _mediator.Publish(
-            new IdentifiedCommand<MarkOrderAsPaidCommand, bool>(new MarkOrderAsPaidCommand(message.OrderId),
-                message.CorrelationId), context.CancellationToken);
+            new IdentifiedCommand<MarkOrderAsPaidCommand, bool>(new MarkOrderAsPaidCommand(@event.OrderId),
+                context.CorrelationId.Value), context.CancellationToken);
     }
 }
