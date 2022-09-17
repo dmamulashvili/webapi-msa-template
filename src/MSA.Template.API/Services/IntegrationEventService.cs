@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using MassTransit;
 using SharedKernel;
 using SharedKernel.IntegrationEvents;
@@ -18,10 +19,10 @@ public class IntegrationEventService : IIntegrationEventService
         IIdentityService identityService,
         ILogger<IntegrationEventService> logger)
     {
-        _serviceProvider = serviceProvider;
+        _serviceProvider = Guard.Against.Null(serviceProvider);
         // _eventBus = eventBus;
-        _identityService = identityService;
-        _logger = logger;
+        _identityService = Guard.Against.Null(identityService);
+        _logger = Guard.Against.Null(logger);
     }
 
     public Task AddEventAsync(BaseIntegrationEvent @event)

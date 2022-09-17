@@ -11,7 +11,7 @@ public class IdentityConsumeContextFilter<T> : IFilter<ConsumeContext<T>> where 
 
     public IdentityConsumeContextFilter(IIdentityServiceProvider identityServiceProvider)
     {
-        _identityServiceProvider = identityServiceProvider;
+        _identityServiceProvider = Guard.Against.Null(identityServiceProvider);
     }
 
     public void Probe(ProbeContext context)

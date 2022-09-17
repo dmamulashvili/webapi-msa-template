@@ -5,6 +5,7 @@ using SharedKernel.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
@@ -17,8 +18,8 @@ public class CancelOrderCommandHandler : BaseCommandHandler<CancelOrderCommand, 
     public CancelOrderCommandHandler(IRepository<Order, Guid> repository,
         ILogger<PlaceOrderCommandHandler> logger)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _repository = Guard.Against.Null(repository);
+        _logger = Guard.Against.Null(logger);
     }
 
     public override async Task<bool> Handle(CancelOrderCommand command, CancellationToken cancellationToken)

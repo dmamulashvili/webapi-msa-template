@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedKernel;
@@ -29,9 +30,9 @@ public class
         IRequestManager requestManager,
         ILogger<IdentifiedCommandHandler<TRequest, TResponse>> logger)
     {
-        _mediator = mediator;
-        _requestManager = requestManager;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _mediator = Guard.Against.Null(mediator);
+        _requestManager = Guard.Against.Null(requestManager);
+        _logger = Guard.Against.Null(logger);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using SharedKernel;
 using SharedKernel.Interfaces;
 
@@ -10,7 +11,7 @@ public class BaseRepository<TEntity, TId> : IRepository<TEntity, TId> where TEnt
 
     public BaseRepository(MasterDbContext dbContext)
     {
-        _dbContext = dbContext;
+        _dbContext = Guard.Against.Null(dbContext);
     }
 
     public IUnitOfWork UnitOfWork => _dbContext;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 using SharedKernel.Interfaces;
@@ -16,7 +17,7 @@ public class BaseReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity,
 
     public BaseReadOnlyRepository(SlaveDbContext dbContext)
     {
-        _dbContext = dbContext;
+        _dbContext = Guard.Against.Null(dbContext);
     }
 
     public async Task<List<TEntity>> FindByAsync(ISpecification<TEntity> specification)

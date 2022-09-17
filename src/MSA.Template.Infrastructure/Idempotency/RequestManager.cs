@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 
@@ -11,7 +12,7 @@ public class RequestManager : IRequestManager
 
     public RequestManager(MasterDbContext dbContext)
     {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _dbContext = Guard.Against.Null(dbContext);
     }
 
 

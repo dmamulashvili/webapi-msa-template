@@ -11,6 +11,7 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 
 namespace MSA.Template.Infrastructure;
 
@@ -34,9 +35,9 @@ public class MasterDbContext : DbContext, IUnitOfWork
         IIdentityService identityService,
         IAuditEventService auditEventService) : base(options)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-        _auditEventService = auditEventService ?? throw new ArgumentNullException(nameof(auditEventService));
+        _mediator = Guard.Against.Null(mediator);
+        _identityService = Guard.Against.Null(identityService);
+        _auditEventService = Guard.Against.Null(auditEventService);
     }
 
     public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;

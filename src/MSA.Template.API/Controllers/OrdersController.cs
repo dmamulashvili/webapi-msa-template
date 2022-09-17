@@ -1,4 +1,5 @@
 using System.Net;
+using Ardalis.GuardClauses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ public class OrdersController : ControllerBase
 
     public OrdersController(IMediator mediator, ILogger<OrdersController> logger)
     {
-        _mediator = mediator;
-        _logger = logger;
+        _mediator = Guard.Against.Null(mediator);
+        _logger = Guard.Against.Null(logger);
     }
 
 

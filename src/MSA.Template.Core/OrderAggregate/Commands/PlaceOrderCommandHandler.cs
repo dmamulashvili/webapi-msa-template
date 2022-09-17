@@ -4,6 +4,7 @@ using SharedKernel.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
@@ -16,8 +17,8 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, st
     public PlaceOrderCommandHandler(IRepository<Order, Guid> repository,
         ILogger<PlaceOrderCommandHandler> logger)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _repository = Guard.Against.Null(repository);
+        _logger = Guard.Against.Null(logger);
     }
 
     public override async Task<string> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)

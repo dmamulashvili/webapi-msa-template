@@ -14,7 +14,7 @@ public class OrderPaymentSucceededIntegrationEventHandler : IIntegrationEventHan
 
     public OrderPaymentSucceededIntegrationEventHandler(IMediator mediator)
     {
-        _mediator = mediator;
+        _mediator = Guard.Against.Null(mediator);
     }
 
     public Task Consume(ConsumeContext<OrderPaymentSucceededIntegrationEvent> context)

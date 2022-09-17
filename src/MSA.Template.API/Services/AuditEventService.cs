@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using MassTransit;
 using SharedKernel.Audit;
 using SharedKernel.Audit.Interfaces;
@@ -15,9 +16,9 @@ public class AuditEventService : IAuditEventService
         // ,IServiceProvider serviceProvider
         )
     {
-        _eventBus = eventBus;
-        _logger = logger;
-        // _serviceProvider = serviceProvider;
+        _eventBus = Guard.Against.Null(eventBus);
+        _logger = Guard.Against.Null(logger);
+        // _serviceProvider = Guard.Against.Null(serviceProvider);
     }
 
     public Task AddEventAsync(BaseAuditEvent @event)

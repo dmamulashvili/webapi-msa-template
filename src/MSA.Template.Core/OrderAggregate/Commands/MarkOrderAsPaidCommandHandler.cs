@@ -3,6 +3,7 @@ using SharedKernel.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 
 namespace MSA.Template.Core.OrderAggregate.Commands;
 
@@ -12,7 +13,7 @@ public class MarkOrderAsPaidCommandHandler : BaseCommandHandler<MarkOrderAsPaidC
 
     public MarkOrderAsPaidCommandHandler(IRepository<Order, Guid> repository)
     {
-        _repository = repository;
+        _repository = Guard.Against.Null(repository);
     }
 
     public override async Task<bool> Handle(MarkOrderAsPaidCommand command, CancellationToken cancellationToken)
