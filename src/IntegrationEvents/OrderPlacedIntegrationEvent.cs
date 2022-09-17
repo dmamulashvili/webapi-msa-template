@@ -6,10 +6,9 @@ namespace IntegrationEvents;
 
 public class OrderPlacedIntegrationEvent : BaseIntegrationEvent
 {
-    public OrderPlacedIntegrationEvent(Guid correlationId, Guid orderId, DateTimeOffset orderDate,
+    public OrderPlacedIntegrationEvent(Guid orderId, DateTimeOffset orderDate,
         IReadOnlyCollection<OrderLine> orderLines)
     {
-        CorrelationId = correlationId;
         OrderId = orderId;
         OrderDate = orderDate;
         OrderLines = orderLines;

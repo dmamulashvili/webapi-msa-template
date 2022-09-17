@@ -62,7 +62,7 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
                 _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}",
                     transaction.TransactionId, typeName);
 
-                await _integrationEventService.PublishEventsAsync(cancellationToken);
+                await _integrationEventService.PublishEventsAsync(request.CorrelationId, cancellationToken);
 
                 await _unitOfWork.CommitTransactionAsync(transaction);
 

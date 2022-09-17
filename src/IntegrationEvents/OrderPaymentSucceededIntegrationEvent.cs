@@ -5,9 +5,8 @@ namespace IntegrationEvents;
 
 public class OrderPaymentSucceededIntegrationEvent : BaseIntegrationEvent
 {
-    public OrderPaymentSucceededIntegrationEvent(Guid correlationId, Guid orderId)
+    public OrderPaymentSucceededIntegrationEvent(Guid orderId)
     {
-        CorrelationId = correlationId;
         OrderId = orderId;
     }
 

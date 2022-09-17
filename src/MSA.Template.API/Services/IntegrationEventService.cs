@@ -30,14 +30,14 @@ public class IntegrationEventService : IIntegrationEventService
         return Task.CompletedTask;
     }
 
-    public async Task PublishEventsAsync(CancellationToken cancellationToken)
+    public async Task PublishEventsAsync(Guid correlationId, CancellationToken cancellationToken)
     {
         var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
         foreach (var @event in _events)
         {
             await publishEndpoint.Publish(@event, @event.GetType(), c =>
             {
-                c.CorrelationId = @event.CorrelationId;
+                c.CorrelationId = correlationId;
                 c.InitiatorId = _identityService.GetUserIdentity();
             }, cancellationToken);
         }
