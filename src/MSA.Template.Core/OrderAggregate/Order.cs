@@ -27,7 +27,7 @@ public class Order : BaseAggregateRoot<Guid>
 
     public void AddOrderLine(OrderLine orderLine)
     {
-        var existingOrderLine = _orderLines.SingleOrDefault(o => o.ItemId == orderLine.ItemId);
+        var existingOrderLine = OrderLines.SingleOrDefault(o => o.ItemId == orderLine.ItemId);
 
         if (existingOrderLine != null)
         {
