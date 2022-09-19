@@ -23,7 +23,7 @@ public class Order : BaseAggregateRoot<Guid>
     public Address Address { get; private set; }
 
     private readonly List<OrderLine> _orderLines = new List<OrderLine>();
-    public IReadOnlyCollection<OrderLine> OrderLines => _orderLines;
+    public virtual IReadOnlyCollection<OrderLine> OrderLines => _orderLines;
 
     public void AddOrderLine(OrderLine orderLine)
     {
