@@ -25,6 +25,11 @@ public class BaseReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity,
         return await ApplySpecification(specification).AsNoTracking().ToListAsync();
     }
 
+    public async Task<int> CountByAsync(ISpecification<TEntity> specification)
+    {
+        return await ApplySpecification(specification).CountAsync();
+    }
+
     public async Task<TEntity?> FindByIdAsync(TId id)
     {
         return await _dbContext.Set<TEntity>().Where(s => s.Id.Equals(id)).AsNoTracking().SingleOrDefaultAsync();

@@ -9,6 +9,7 @@ public interface IReadOnlyRepository<TEntity, in TId>
     where TId : IEquatable<TId>
 {
     Task<List<TEntity>> FindByAsync(ISpecification<TEntity> specification);
+    Task<int> CountByAsync(ISpecification<TEntity> specification);
 
     Task<TEntity?> FindByIdAsync(TId id);
     
