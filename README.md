@@ -50,3 +50,6 @@ Configure JWT
     "Secret": ""
   }
 ```
+
+> **Note**   
+> ASP.NET Core Web API Audit Microservice template: <https://github.com/dmamulashvili/webapi-msa-audit-template.git> 
