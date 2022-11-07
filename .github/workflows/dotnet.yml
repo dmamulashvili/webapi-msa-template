@@ -43,6 +43,6 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       env:
           # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: postgres
+          POSTGRES_HOST: 127.0.0.1
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
