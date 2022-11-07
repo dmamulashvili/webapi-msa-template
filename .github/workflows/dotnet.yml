@@ -4,11 +4,10 @@
 name: .NET
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Lint Code Base"]
+    types: [requested]
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   build:
 
