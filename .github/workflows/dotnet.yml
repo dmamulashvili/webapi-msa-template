@@ -6,7 +6,7 @@ name: .NET
 on:
   workflow_run:
     workflows: ["Lint Code Base"]
-    types: [requested]
+    types: [completed]
     branches: [ "main" ]
 jobs:
   build:
