@@ -9,4 +9,4 @@ jobs:
     uses: dmamulashvili/webapi-msa-template/.github/workflows/super-linter.yml@main
   dotnet-build-test:
     needs: [super-linter]
-    uses: dmamulashvili/webapi-msa-template/.github/workflows/dotnet-build-test.yml@main
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/dotnet.yml@main
