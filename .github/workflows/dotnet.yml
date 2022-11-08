@@ -6,7 +6,7 @@ name: .NET Build & Test
 on:
   workflow_call:
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest    
     services:
       # Label used to access the service container
