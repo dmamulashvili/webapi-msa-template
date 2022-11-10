@@ -19,16 +19,26 @@ jobs:
     name: Deploy DEV
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    
     environment: 
       name: Development
       url: https://dev.example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
       
   deploy_to_qa:
     name: Deploy QA
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release/**'
+    
     environment:
       name: QA
       url: https://qa.example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
   
     
