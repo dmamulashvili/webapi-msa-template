@@ -17,6 +17,7 @@ jobs:
     
   deploy_to_dev:
     name: Deploy DEV
+    needs: [integration]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     
@@ -30,6 +31,7 @@ jobs:
       
   deploy_to_qa:
     name: Deploy QA
+    needs: [integration]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release/**'
     
