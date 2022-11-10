@@ -4,10 +4,10 @@ on:
   workflow_call:
     
 jobs:
-  super-linter:
-    name: Super Linter
-    uses: dmamulashvili/webapi-msa-template/.github/workflows/super-linter.yml@main
+  linter:
+    name: Linter
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/linter.yml@main
   dotnet:
     name: .NET
-    needs: [super-linter]
+    needs: [linter]
     uses: dmamulashvili/webapi-msa-template/.github/workflows/dotnet.yml@main
