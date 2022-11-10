@@ -14,3 +14,21 @@ on:
 jobs:
   integration:
     uses: dmamulashvili/webapi-msa-template/.github/workflows/integration.yml@main
+    
+  deploy_to_dev:
+    name: Deploy DEV
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: 
+      name: Development
+      url: https://dev.example.com
+      
+  deploy_to_qa:
+    name: Deploy QA
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/release/**'
+    environment:
+      name: QA
+      url: https://qa.example.com
+  
+    
