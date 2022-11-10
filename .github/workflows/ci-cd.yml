@@ -1,0 +1,14 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      -'develop' # DEV
+      -'release/**' # QA
+      -'main' # PROD
+  pull_request:
+    branches:
+      -'main' # UAT
+  
+  jobs:
+    integration:
+      uses: dmamulashvili/webapi-msa-template/.github/workflows/integration.yml@main
