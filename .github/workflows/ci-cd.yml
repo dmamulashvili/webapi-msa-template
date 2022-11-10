@@ -1,7 +1,6 @@
 name: Integration & Delivery
 
 on:
-  workflow_dispatch: # PROD
   push:
     branches: 
       - 'develop' # DEV
@@ -68,7 +67,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     environment:
-      name: PROD
+      name: PROD # Environment protection rules / Required reviewers
       url: https://example.com
       
     steps:
