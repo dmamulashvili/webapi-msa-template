@@ -13,6 +13,7 @@ on:
   
 jobs:
   integration:
+    name: Integration
     uses: dmamulashvili/webapi-msa-template/.github/workflows/integration.yml@main
     
   deploy_to_dev:
