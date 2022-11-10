@@ -4,12 +4,13 @@
 # You can adjust the behavior by modifying this file.
 # For more information, see:
 # https://github.com/github/super-linter
-name: Super Linter
+name: Linter
 
 on:
   workflow_call:
 jobs:
-  run-lint:
+  super-linter:
+    name: Super Linter
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
