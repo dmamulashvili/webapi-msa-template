@@ -1,7 +1,7 @@
 using Ardalis.GuardClauses;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using MSA.Template.API.Configuration;
+using MSA.Template.BackgroundTasks.Configuration;
 using MSA.Template.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

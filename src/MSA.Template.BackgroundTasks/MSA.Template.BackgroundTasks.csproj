@@ -8,11 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MassTransit.AmazonSQS" Version="8.0.6" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MSA.Template.API\MSA.Template.API.csproj" />
+      <ProjectReference Include="..\MSA.Template.Core\MSA.Template.Core.csproj" />
+      <ProjectReference Include="..\MSA.Template.Infrastructure\MSA.Template.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
