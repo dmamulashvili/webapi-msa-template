@@ -1,7 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/template",
   "author": "Dimitri Mamulashvili",
-  "classifications": [ "Web", "WebAPI", "Microservice" ],
+  "classifications": [
+    "Web",
+    "WebAPI",
+    "Microservice"
+  ],
   "identity": "MSA.Template",
   "name": "ASP.NET Core Web API Microservice Template",
   "shortName": "webapi-msa",
@@ -15,7 +19,11 @@
     {
       "modifiers": [
         {
-          "exclude": [ ".vs/**", ".idea/**", ".git/**" ]
+          "exclude": [
+            ".vs/**",
+            ".idea/**",
+            ".git/**"
+          ]
         }
       ]
     }
