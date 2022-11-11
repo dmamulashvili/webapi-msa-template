@@ -33,7 +33,6 @@ jobs:
           
   mega-linter:
     name: Mega Linter
-    needs: [super-linter]
     runs-on: ubuntu-latest
     steps:
       # Git Checkout
