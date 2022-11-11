@@ -32,7 +32,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
   mega-linter:
-    name: MegaLinter
+    name: Mega Linter
+    needs: [super-linter]
     runs-on: ubuntu-latest
     steps:
       # Git Checkout
