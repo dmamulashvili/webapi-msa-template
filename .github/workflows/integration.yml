@@ -4,6 +4,9 @@ on:
   workflow_call:
     
 jobs:
+  codeql:
+    name: CodeQL
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/codeql.yml@main
   linter:
     name: Linter
     uses: dmamulashvili/webapi-msa-template/.github/workflows/linter.yml@main
