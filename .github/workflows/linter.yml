@@ -57,6 +57,7 @@ jobs:
           # DISABLE: COPYPASTE,SPELL # Uncomment to disable copy-paste and spell checks
           DISABLE_LINTERS: SPELL_CSPELL,YAML_YAMLLINT
           DISABLE_ERRORS_LINTERS: COPYPASTE_JSCPD,DOCKERFILE_HADOLINT
+          FILTER_REGEX_INCLUDE: (src/),(tests/)
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
