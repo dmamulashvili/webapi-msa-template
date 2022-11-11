@@ -58,6 +58,7 @@ jobs:
           DISABLE_LINTERS: SPELL_CSPELL,YAML_YAMLLINT
           DISABLE_ERRORS_LINTERS: COPYPASTE_JSCPD,DOCKERFILE_HADOLINT
           FILTER_REGEX_INCLUDE: (src/),(tests/),(.*\.sln)
+          FILTER_REGEX_EXCLUDE: (Dockerfile)
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
