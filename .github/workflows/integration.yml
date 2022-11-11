@@ -1,0 +1,13 @@
+name: Continuous Integration
+
+on:
+  workflow_call:
+    
+jobs:
+  linter:
+    name: Linter
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/linter.yml@main
+  dotnet:
+    name: .NET
+    needs: [linter]
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/dotnet.yml@main

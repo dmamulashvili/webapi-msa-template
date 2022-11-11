@@ -1,0 +1,79 @@
+name: Integration & Delivery
+
+on:
+  push:
+    branches: 
+      - 'develop' # DEV
+      - 'release/**' # QA
+      - 'main' # UAT
+  
+jobs:
+  integration:
+    name: Integration
+    uses: dmamulashvili/webapi-msa-template/.github/workflows/integration.yml@main
+    
+  deploy_to_dev:
+    name: Deploy DEV
+    needs: [integration]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    
+    environment: 
+      name: Development
+      url: https://dev.example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    # ...deployment-specific steps
+    
+    
+  deploy_to_qa:
+    name: Deploy QA
+    needs: [integration]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/release/**'
+    
+    environment:
+      name: QA
+      url: https://qa.example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    # ...deployment-specific steps
+    
+    
+  deploy_to_uat:
+    name: Deploy UAT
+    needs: [integration]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: UAT
+      url: https://uat.example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    # ...deployment-specific steps
+    
+    
+  deploy_to_prod:
+    name: Deploy PROD
+    needs: [deploy_to_uat]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: PROD # Environment protection rules / Required reviewers
+      url: https://example.com
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    # ...deployment-specific steps
+    
+    
+    
