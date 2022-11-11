@@ -6,7 +6,7 @@ on:
       - 'develop' # DEV
       - 'release/**' # QA
       - 'main' # UAT
-  
+
 jobs:
   integration:
     name: Integration
