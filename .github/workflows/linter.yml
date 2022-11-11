@@ -56,7 +56,7 @@ jobs:
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
           # DISABLE: COPYPASTE,SPELL # Uncomment to disable copy-paste and spell checks
           DISABLE_LINTERS: SPELL_CSPELL,YAML_YAMLLINT
-          DISABLE_ERRORS_LINTERS: COPYPASTE_JSCPD
+          DISABLE_ERRORS_LINTERS: COPYPASTE_JSCPD,DOCKERFILE_HADOLINT
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
