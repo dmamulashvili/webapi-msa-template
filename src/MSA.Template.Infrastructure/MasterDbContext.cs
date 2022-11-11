@@ -1,3 +1,8 @@
+using System;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using AuditEvents;
 using MassTransit;
 using MediatR;
@@ -5,13 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using MSA.Template.Infrastructure.EntityConfigurations;
 using SharedKernel;
-using SharedKernel.Interfaces;
 using SharedKernel.Audit.Interfaces;
-using System;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Ardalis.GuardClauses;
+using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure;
 
@@ -68,19 +68,17 @@ public class MasterDbContext : DbContext, IUnitOfWork
 
     public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        var modifiedBy = _identityService.GetUserIdentity();
-
         foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
         {
             if (item.State == EntityState.Modified || item.State == EntityState.Added)
             {
                 item.Entity.SetCorrelationId(_correlationId);
-                item.Entity.SetModifiedBy(modifiedBy.ToString());
+                item.Entity.SetModifiedBy(_identityService.GetUserIdentity().ToString());
                 item.Entity.SetDateModified(DateTimeOffset.UtcNow);
 
                 if (item.State == EntityState.Added)
                 {
-                    item.Entity.SetCreatedBy(modifiedBy.ToString());
+                    item.Entity.SetCreatedBy(_identityService.GetUserIdentity().ToString());
                     item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
                 }
             }
@@ -100,19 +98,17 @@ public class MasterDbContext : DbContext, IUnitOfWork
         // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
         await _mediator.DispatchDomainEventsAsync(this);
 
-        var modifiedBy = _identityService.GetUserIdentity();
-
         foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
         {
             if (item.State == EntityState.Modified || item.State == EntityState.Added)
             {
                 item.Entity.SetCorrelationId(_correlationId);
-                item.Entity.SetModifiedBy(modifiedBy.ToString());
+                item.Entity.SetModifiedBy(_identityService.GetUserIdentity().ToString());
                 item.Entity.SetDateModified(DateTimeOffset.UtcNow);
 
                 if (item.State == EntityState.Added)
                 {
-                    item.Entity.SetCreatedBy(modifiedBy.ToString());
+                    item.Entity.SetCreatedBy(_identityService.GetUserIdentity().ToString());
                     item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
                 }
             }
@@ -136,7 +132,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
                             property.Name,
                             original is not null ? JsonSerializer.Serialize(original) : null,
                             current is not null ? JsonSerializer.Serialize(current) : null,
-                            modifiedBy,
+                            _identityService.GetUserIdentity(),
                             DateTimeOffset.UtcNow);
 
                         await _auditEventService.AddEventAsync(auditEvent);
