@@ -11,7 +11,7 @@ WORKDIR /src
 COPY ["src/MSA.Template.BackgroundTasks/MSA.Template.BackgroundTasks.csproj", "MSA.Template.BackgroundTasks/"]
 RUN dotnet restore "src/MSA.Template.BackgroundTasks/MSA.Template.BackgroundTasks.csproj"
 COPY . .
-WORKDIR "/src/MSA.Template.BackgroundTasks"
+WORKDIR /src/MSA.Template.BackgroundTasks
 RUN dotnet build "MSA.Template.BackgroundTasks.csproj" -c Release -o /app/build
 
 FROM build AS publish
