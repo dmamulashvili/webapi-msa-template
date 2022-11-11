@@ -26,7 +26,7 @@ public class OrderPlacedDomainEventHandler : BaseDomainEventHandler<OrderPlacedD
             @event.Order.Id,
             @event.Order.OrderDate,
             @event.Order.OrderLines.Select(ol =>
-                new OrderPlacedIntegrationEvent.OrderLine(
+                new OrderPlacedIntegrationEvent.OrderLineIntegrationEventDto(
                     ol.ItemId,
                     ol.ItemPrice,
                     ol.Quantity)).ToList());
