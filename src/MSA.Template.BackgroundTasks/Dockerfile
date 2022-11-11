@@ -1,4 +1,7 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0.11-bullseye-slim-arm64v8 AS base
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -g appuser appuser
+USER appuser
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
