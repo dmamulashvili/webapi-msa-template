@@ -8,11 +8,11 @@ name: Linter
 
 on:
   workflow_call:
-  
+
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
-  
+
 jobs:
   super-linter:
     name: Super Linter
@@ -30,7 +30,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+  
   mega-linter:
     name: Mega Linter
     runs-on: ubuntu-latest
