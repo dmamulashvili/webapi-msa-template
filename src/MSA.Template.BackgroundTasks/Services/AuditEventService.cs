@@ -9,12 +9,13 @@ public class AuditEventService : IAuditEventService
 {
     private readonly IBus _eventBus;
     private readonly ILogger<AuditEventService> _logger;
+
     private readonly List<IAuditEvent> _events = new();
     // private readonly IServiceProvider _serviceProvider;
 
-    public AuditEventService(IBus eventBus, ILogger<AuditEventService> logger 
+    public AuditEventService(IBus eventBus, ILogger<AuditEventService> logger
         // ,IServiceProvider serviceProvider
-        )
+    )
     {
         _eventBus = Guard.Against.Null(eventBus);
         _logger = Guard.Against.Null(logger);
@@ -31,7 +32,7 @@ public class AuditEventService : IAuditEventService
     {
         // TODO: To enable OutBox uncomment below functionality and replace _eventBus with publishEndpoint. Also view TransactionBehaviour.cs
         // var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
-        foreach (var @events in _events.GroupBy(e => new {e.CorrelationId, e.InitiatorId}))
+        foreach (var @events in _events.GroupBy(e => new { e.CorrelationId, e.InitiatorId }))
         {
             await _eventBus.PublishBatch(@events, @events.First().GetType(), c =>
             {
@@ -39,7 +40,7 @@ public class AuditEventService : IAuditEventService
                 c.InitiatorId = @events.Key.InitiatorId;
             }, cancellationToken);
         }
-        
+
         _events.Clear();
     }
 }

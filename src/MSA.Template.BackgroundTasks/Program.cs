@@ -21,7 +21,7 @@ builder.Services.AddMassTransit(configurator =>
         o.UseBusOutbox();
         o.DisableInboxCleanupService();
     });
-            
+
     configurator.UsingAmazonSqs((context, cfg) =>
     {
         var amazonSqsConfig = builder.Configuration.GetSection(nameof(AmazonSqsConfiguration))
