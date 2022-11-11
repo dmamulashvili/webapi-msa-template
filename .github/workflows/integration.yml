@@ -9,6 +9,7 @@ jobs:
     uses: dmamulashvili/webapi-msa-template/.github/workflows/codeql.yml@main
   linter:
     name: Linter
+    needs: [codeql]
     uses: dmamulashvili/webapi-msa-template/.github/workflows/linter.yml@main
   dotnet:
     name: .NET
