@@ -11,15 +11,13 @@ public class AuditEventService : IAuditEventService
     private readonly ILogger<AuditEventService> _logger;
 
     private readonly List<IAuditEvent> _events = new();
-    // private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
-    public AuditEventService(IBus eventBus, ILogger<AuditEventService> logger
-        // ,IServiceProvider serviceProvider
-    )
+    public AuditEventService(IBus eventBus, ILogger<AuditEventService> logger, IServiceProvider serviceProvider)
     {
         _eventBus = Guard.Against.Null(eventBus);
         _logger = Guard.Against.Null(logger);
-        // _serviceProvider = Guard.Against.Null(serviceProvider);
+        _serviceProvider = Guard.Against.Null(serviceProvider);
     }
 
     public Task AddEventAsync(BaseAuditEvent @event)
