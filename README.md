@@ -4,7 +4,7 @@ ASP.NET Core Web API Microservice Template using Clean Architecture, CQRS, Struc
 > Reference used: <https://github.com/dotnet-architecture/eShopOnContainers> 
 
 ## Install
-Clone repo
+Clone repository
 ```console
 git clone https://github.com/dmamulashvili/webapi-msa-template.git
 ```
