@@ -27,7 +27,7 @@ cd /<DIRECTORY_TO_CREATE_SOLUTION_AT>
 dotnet new webapi-msa -o "MyCompany.MyProject.MyOrdering"
 ```
 
-## Configure:
+## Configure
 
 Update PostgreSQL writer(Master) & reader(Slave) connection strings in case you're not using local one.
 
@@ -39,7 +39,7 @@ Update PostgreSQL writer(Master) & reader(Slave) connection strings in case you'
 ```
 
 Create aws user with Programmatic access & read/write permissions to SNS/SQS.
-> **Warning**  
+> **Warning**
 > The following characters are accepted in QueueName: alphanumeric characters, hyphens (-), and underscores (_).
 
 ```json
@@ -64,5 +64,5 @@ Configure JWT
 }
 ```
 
-> **Note**   
-> ASP.NET Core Web API Audit Microservice template: <https://github.com/dmamulashvili/webapi-msa-audit-template.git> 
+> **Note**
+> ASP.NET Core Web API Audit Microservice template: <https://github.com/dmamulashvili/webapi-msa-audit-template.git>
