@@ -14,4 +14,6 @@ public class DuplicateRequestException : Exception
     public DuplicateRequestException(string message, Exception innerException)
         : base(message, innerException)
     { }
+
+    public override string? StackTrace => string.Empty;
 }
