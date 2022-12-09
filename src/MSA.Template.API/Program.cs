@@ -200,7 +200,6 @@ static class CustomExtensionsMethods
                         e.UseMessageRetry(r =>
                         {
                             r.Interval(5, TimeSpan.FromMinutes(1));
-                            r.Ignore<ArgumentNullException>();
                         });
 
                         e.ConfigureConsumers(context);
