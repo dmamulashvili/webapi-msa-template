@@ -16,13 +16,13 @@ public class DatabaseFixture : IDisposable
             .UseNpgsql("Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres")
             .Options;
 
-        var mediator = new Mock<IMediator>();
+        var mediator = Mock.Of<IMediator>();
         var identityService = new IdentityService();
         ((IIdentityServiceProvider)identityService).SetUserIdentity(Guid.NewGuid());
-        var auditEventService = new Mock<IAuditEventService>();
+        var auditEventService = Mock.Of<IAuditEventService>();
 
-        MasterDbContext = new MasterDbContext(dbOptions, mediator.Object, identityService,
-            auditEventService.Object);
+        MasterDbContext = new MasterDbContext(dbOptions, mediator, identityService,
+            auditEventService);
         SlaveDbContext = new SlaveDbContext(dbOptions);
 
         MasterDbContext.Database.EnsureCreated();
