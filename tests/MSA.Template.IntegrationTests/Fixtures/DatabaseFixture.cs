@@ -17,11 +17,11 @@ public class DatabaseFixture : IDisposable
             .Options;
 
         var mediator = Mock.Of<IMediator>();
-        var identityService = new IdentityService();
-        ((IIdentityServiceProvider)identityService).SetUserIdentity(Guid.NewGuid());
+        var identityService = new Mock<IIdentityService>();
+        identityService.Setup(s => s.GetUserIdentity()).Returns(Guid.NewGuid);
         var auditEventService = Mock.Of<IAuditEventService>();
-
-        MasterDbContext = new MasterDbContext(dbOptions, mediator, identityService,
+        
+        MasterDbContext = new MasterDbContext(dbOptions, mediator, identityService.Object,
             auditEventService);
         SlaveDbContext = new SlaveDbContext(dbOptions);
 
