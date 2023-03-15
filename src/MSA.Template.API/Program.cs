@@ -101,7 +101,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
-    optionsBuilder.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString(nameof(MasterDbContext)));
+    optionsBuilder.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString(nameof(MasterDbContext)), options =>
+    {
+        // options.EnableRetryOnFailure();
+    });
 });
 
 builder.Services.AddDbContext<SlaveDbContext>(optionsBuilder =>
