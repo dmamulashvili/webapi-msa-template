@@ -8,7 +8,7 @@ APPLY_FIXES: none
 # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
 ENABLE_LINTERS:
   - COPYPASTE_JSCPD
-  - CSHARP_DOTNET_FORMAT
+  - CSHARP_CSHARPIER
   - SQL_SQLFLUFF
   - ENV_DOTENV_LINTER
   - HTML_HTMLHINT
