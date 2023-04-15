@@ -1,7 +1,6 @@
 name: Integration & Delivery
-
-on:
 #  workflow_call:
+on:
   push:
   branches:
   - 'develop' # DEV
