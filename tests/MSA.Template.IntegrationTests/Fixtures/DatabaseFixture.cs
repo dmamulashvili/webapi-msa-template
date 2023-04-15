@@ -14,7 +14,7 @@ public class DatabaseFixture : IDisposable
     {
         var dbOptions = new DbContextOptionsBuilder<MasterDbContext>()
             .UseNpgsql(
-                "Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres"
+                "Server=localhost;Port=54321;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres"
             )
             .Options;
 
