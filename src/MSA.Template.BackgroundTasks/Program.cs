@@ -1,14 +1,18 @@
 using Ardalis.GuardClauses;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using MSA.Template.BackgroundTasks.Configuration;
 using MSA.Template.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
-    optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(nameof(MasterDbContext)));
+    var connStringMasterDbContext = Environment.GetEnvironmentVariable(
+        "ConnectionString_MasterDbContext"
+    );
+    Guard.Against.NullOrWhiteSpace(connStringMasterDbContext, nameof(connStringMasterDbContext));
+
+    optionsBuilder.UseNpgsql(connStringMasterDbContext);
 });
 
 builder.Services.AddMassTransit(configurator =>
@@ -25,20 +29,24 @@ builder.Services.AddMassTransit(configurator =>
     configurator.UsingAmazonSqs(
         (context, cfg) =>
         {
-            var amazonSqsConfig = builder.Configuration
-                .GetSection(nameof(AmazonSqsConfiguration))
-                .Get<AmazonSqsConfiguration>();
+            var projectShortName = builder.Configuration["Project:ShortName"];
 
-            Guard.Against.NullOrWhiteSpace(amazonSqsConfig.Scope, nameof(amazonSqsConfig.Scope));
+            Guard.Against.NullOrWhiteSpace(projectShortName, nameof(projectShortName));
+
+            var amazonSqsAccessKey = Environment.GetEnvironmentVariable("AmazonSQS_AccessKey");
+            var amazonSqsSecretKey = Environment.GetEnvironmentVariable("AmazonSQS_SecretKey");
+            var amazonSqsRegionEndpointSystemName = Environment.GetEnvironmentVariable(
+                "AmazonSQS_RegionEndpointSystemName"
+            );
 
             cfg.Host(
-                amazonSqsConfig.RegionEndpointSystemName,
+                amazonSqsRegionEndpointSystemName,
                 h =>
                 {
-                    h.AccessKey(amazonSqsConfig.AccessKey);
-                    h.SecretKey(amazonSqsConfig.SecretKey);
+                    h.AccessKey(amazonSqsAccessKey);
+                    h.SecretKey(amazonSqsSecretKey);
 
-                    h.Scope($"{builder.Environment.EnvironmentName}_{amazonSqsConfig.Scope}", true);
+                    h.Scope($"{builder.Environment.EnvironmentName}_{projectShortName}", true);
                 }
             );
         }
