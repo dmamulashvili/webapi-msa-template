@@ -13,18 +13,17 @@ APPLY_FIXES:
 #ENABLE:
 # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
 ENABLE_LINTERS:
-  - COPYPASTE_JSCPD
-  - CSHARP_CSHARPIER
-  - SQL_SQLFLUFF
-  - ENV_DOTENV_LINTER
-  - HTML_HTMLHINT
-  - JSON_PRETTIER
-  - YAML_PRETTIER
-  - DOCKERFILE_HADOLINT
-  - OPENAPI_SPECTRAL
-  - SPELL_MISSPELL
-  - REPOSITORY_GITLEAKS
-  - REPOSITORY_SECRETLINT
+  - CSHARP_CSHARPIER # formatter
+  - JSON_PRETTIER # formatter
+  - YAML_PRETTIER # formatter
+  - YAML_YAMLLINT # code quality
+  - DOCKERFILE_HADOLINT # code quality
+  - COPYPASTE_JSCPD # code quality
+  - REPOSITORY_DEVSKIM # security vulnerabilities, insecure coding practices
+  - REPOSITORY_DUSTILOCK # dependency confusion attack
+  - REPOSITORY_GITLEAKS # security vulnerabilities, secrets, hard-coded credentials, API keys, and other sensitive data that should not be stored in a version control system
+  - REPOSITORY_TRIVY # vulnerabilities in packages
+  - SPELL_MISSPELL # correct commonly misspelled English words
 # DISABLE:
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
