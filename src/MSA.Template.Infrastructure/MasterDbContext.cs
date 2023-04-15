@@ -68,21 +68,7 @@ public class MasterDbContext : DbContext, IUnitOfWork
 
     public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
-        {
-            if (item.State == EntityState.Modified || item.State == EntityState.Added)
-            {
-                item.Entity.SetCorrelationId(_correlationId);
-                item.Entity.SetModifiedBy(_identityService.GetUserIdentity().ToString());
-                item.Entity.SetDateModified(DateTimeOffset.UtcNow);
-
-                if (item.State == EntityState.Added)
-                {
-                    item.Entity.SetCreatedBy(_identityService.GetUserIdentity().ToString());
-                    item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
-                }
-            }
-        }
+        SetEntityModificationInfo();
 
         var result = await base.SaveChangesAsync(cancellationToken);
         return result;
@@ -98,22 +84,19 @@ public class MasterDbContext : DbContext, IUnitOfWork
         // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
         await _mediator.DispatchDomainEventsAsync(this);
 
-        foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
-        {
-            if (item.State == EntityState.Modified || item.State == EntityState.Added)
-            {
-                item.Entity.SetCorrelationId(_correlationId);
-                item.Entity.SetModifiedBy(_identityService.GetUserIdentity().ToString());
-                item.Entity.SetDateModified(DateTimeOffset.UtcNow);
+        SetEntityModificationInfo();
 
-                if (item.State == EntityState.Added)
-                {
-                    item.Entity.SetCreatedBy(_identityService.GetUserIdentity().ToString());
-                    item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
-                }
-            }
-        }
+        await CreateEntityModificationAuditEventsAsync();
 
+        // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
+        // performed through the DbContext will be committed
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        return true;
+    }
+
+    private async Task CreateEntityModificationAuditEventsAsync()
+    {
         foreach (var item in base.ChangeTracker.Entries<BaseEntity<Guid>>())
         {
             if (item.State == EntityState.Modified)
@@ -140,12 +123,25 @@ public class MasterDbContext : DbContext, IUnitOfWork
                 }
             }
         }
+    }
 
-        // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
-        // performed through the DbContext will be committed
-        var result = await base.SaveChangesAsync(cancellationToken);
+    private void SetEntityModificationInfo()
+    {
+        foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
+        {
+            if (item.State == EntityState.Modified || item.State == EntityState.Added)
+            {
+                item.Entity.SetCorrelationId(_correlationId);
+                item.Entity.SetModifiedBy(_identityService.GetUserIdentity().ToString());
+                item.Entity.SetDateModified(DateTimeOffset.UtcNow);
 
-        return true;
+                if (item.State == EntityState.Added)
+                {
+                    item.Entity.SetCreatedBy(_identityService.GetUserIdentity().ToString());
+                    item.Entity.SetDateCreated(DateTimeOffset.UtcNow);
+                }
+            }
+        }
     }
 
     public IExecutionStrategy CreateExecutionStrategy(Guid correlationId)
