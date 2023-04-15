@@ -4,7 +4,6 @@ namespace MSA.Template.Infrastructure;
 
 public class SlaveDbContext : MasterDbContext
 {
-    public SlaveDbContext(DbContextOptions<MasterDbContext> options) : base(options)
-    {
-    }
+    public SlaveDbContext(DbContextOptions<MasterDbContext> options)
+        : base(options) { }
 }

@@ -32,7 +32,11 @@ public class BaseReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity,
 
     public async Task<TEntity?> FindByIdAsync(TId id)
     {
-        return await _dbContext.Set<TEntity>().Where(s => s.Id.Equals(id)).AsNoTracking().SingleOrDefaultAsync();
+        return await _dbContext
+            .Set<TEntity>()
+            .Where(s => s.Id.Equals(id))
+            .AsNoTracking()
+            .SingleOrDefaultAsync();
     }
 
     public async Task<TEntity?> FindSingleByAsync(ISpecification<TEntity> specification)
@@ -42,6 +46,9 @@ public class BaseReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity,
 
     private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
     {
-        return SpecificationEvaluator<TEntity, TId>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
+        return SpecificationEvaluator<TEntity, TId>.GetQuery(
+            _dbContext.Set<TEntity>().AsQueryable(),
+            spec
+        );
     }
 }

@@ -4,9 +4,13 @@ using SharedKernel.Interfaces;
 
 namespace SharedKernel;
 
-public class SpecificationEvaluator<TEntity, TId> where TEntity : BaseEntity<TId>
+public class SpecificationEvaluator<TEntity, TId>
+    where TEntity : BaseEntity<TId>
 {
-    public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
+    public static IQueryable<TEntity> GetQuery(
+        IQueryable<TEntity> inputQuery,
+        ISpecification<TEntity> specification
+    )
     {
         var query = inputQuery;
 
@@ -17,12 +21,16 @@ public class SpecificationEvaluator<TEntity, TId> where TEntity : BaseEntity<TId
         }
 
         // Includes all expression-based includes
-        query = specification.Includes.Aggregate(query,
-            (current, include) => current.Include(include));
+        query = specification.Includes.Aggregate(
+            query,
+            (current, include) => current.Include(include)
+        );
 
         // Include any string-based include statements
-        query = specification.IncludeStrings.Aggregate(query,
-            (current, include) => current.Include(include));
+        query = specification.IncludeStrings.Aggregate(
+            query,
+            (current, include) => current.Include(include)
+        );
 
         // Apply ordering if expressions are set
         if (specification.OrderBy != null)
@@ -42,8 +50,7 @@ public class SpecificationEvaluator<TEntity, TId> where TEntity : BaseEntity<TId
         // Apply paging if enabled
         if (specification.IsPagingEnabled)
         {
-            query = query.Skip(specification.Skip)
-                .Take(specification.Take);
+            query = query.Skip(specification.Skip).Take(specification.Take);
         }
         return query;
     }

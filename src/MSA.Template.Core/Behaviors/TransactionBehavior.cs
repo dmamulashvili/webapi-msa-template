@@ -22,10 +22,12 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     private readonly IIntegrationEventService _integrationEventService;
     private readonly IAuditEventService _auditEventService;
 
-    public TransactionBehavior(ILogger<TransactionBehavior<TRequest, TResponse>> logger,
+    public TransactionBehavior(
+        ILogger<TransactionBehavior<TRequest, TResponse>> logger,
         IUnitOfWork unitOfWork,
         IIntegrationEventService integrationEventService,
-        IAuditEventService auditEventService)
+        IAuditEventService auditEventService
+    )
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentException(nameof(IUnitOfWork));
         _integrationEventService =
@@ -34,8 +36,11 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         _auditEventService = auditEventService;
     }
 
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next
+    )
     {
         var typeName = request.GetGenericTypeName();
 
@@ -54,15 +59,25 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
 
                 Guard.Against.Null(transaction, nameof(transaction));
 
-                _logger.LogInformation("----- Begin transaction {TransactionId} for {CommandName} ({@Command})",
-                    transaction.TransactionId, typeName, request);
+                _logger.LogInformation(
+                    "----- Begin transaction {TransactionId} for {CommandName} ({@Command})",
+                    transaction.TransactionId,
+                    typeName,
+                    request
+                );
 
                 var response = await next();
 
-                _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}",
-                    transaction.TransactionId, typeName);
+                _logger.LogInformation(
+                    "----- Commit transaction {TransactionId} for {CommandName}",
+                    transaction.TransactionId,
+                    typeName
+                );
 
-                await _integrationEventService.PublishEventsAsync(request.CorrelationId, cancellationToken);
+                await _integrationEventService.PublishEventsAsync(
+                    request.CorrelationId,
+                    cancellationToken
+                );
 
                 await _unitOfWork.CommitTransactionAsync(transaction);
 
@@ -74,7 +89,12 @@ public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "ERROR Handling transaction for {CommandName} ({@Command})", typeName, request);
+            _logger.LogError(
+                ex,
+                "ERROR Handling transaction for {CommandName} ({@Command})",
+                typeName,
+                request
+            );
 
             await _unitOfWork.RollbackTransaction();
             throw;

@@ -26,14 +26,16 @@ public class MasterDbContext : DbContext, IUnitOfWork
     private Guid _correlationId;
     private IDbContextTransaction? _currentTransaction;
 
-    public MasterDbContext(DbContextOptions<MasterDbContext> options) : base(options)
-    {
-    }
+    public MasterDbContext(DbContextOptions<MasterDbContext> options)
+        : base(options) { }
 
-    public MasterDbContext(DbContextOptions<MasterDbContext> options,
+    public MasterDbContext(
+        DbContextOptions<MasterDbContext> options,
         IMediator mediator,
         IIdentityService identityService,
-        IAuditEventService auditEventService) : base(options)
+        IAuditEventService auditEventService
+    )
+        : base(options)
     {
         _mediator = Guard.Against.Null(mediator);
         _identityService = Guard.Against.Null(identityService);
@@ -46,14 +48,18 @@ public class MasterDbContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ClientRequestEntityTypeConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(ClientRequestEntityTypeConfiguration).Assembly
+        );
 
         // modelBuilder.AddInboxStateEntity();
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();
     }
 
-    public Task SaveCorrelationAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public Task SaveCorrelationAsync(
+        CancellationToken cancellationToken = default(CancellationToken)
+    )
     {
         foreach (var item in base.ChangeTracker.Entries<IAggregateRoot>())
         {
@@ -66,7 +72,9 @@ public class MasterDbContext : DbContext, IUnitOfWork
         return Task.CompletedTask;
     }
 
-    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public new async Task<int> SaveChangesAsync(
+        CancellationToken cancellationToken = default(CancellationToken)
+    )
     {
         SetEntityModificationInfo();
 
@@ -74,21 +82,23 @@ public class MasterDbContext : DbContext, IUnitOfWork
         return result;
     }
 
-    public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<bool> SaveEntitiesAsync(
+        CancellationToken cancellationToken = default(CancellationToken)
+    )
     {
-        // Dispatch Domain Events collection. 
+        // Dispatch Domain Events collection.
         // Choices:
-        // A) Right BEFORE committing data (EF SaveChanges) into the DB will make a single transaction including  
+        // A) Right BEFORE committing data (EF SaveChanges) into the DB will make a single transaction including
         // side effects from the domain event handlers which are using the same DbContext with "InstancePerLifetimeScope" or "scoped" lifetime
-        // B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions. 
-        // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
+        // B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions.
+        // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers.
         await _mediator.DispatchDomainEventsAsync(this);
 
         SetEntityModificationInfo();
 
         await CreateEntityModificationAuditEventsAsync();
 
-        // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
+        // After executing this line all the changes (from the Command Handler and Domain Event Handlers)
         // performed through the DbContext will be committed
         var result = await base.SaveChangesAsync(cancellationToken);
 
@@ -109,14 +119,16 @@ public class MasterDbContext : DbContext, IUnitOfWork
                     if (!Equals(original, current))
                     {
                         var entity = item.Entity;
-                        var auditEvent = new EntityPropertyModifiedAuditEvent(_correlationId,
+                        var auditEvent = new EntityPropertyModifiedAuditEvent(
+                            _correlationId,
                             entity.GetType().Name,
                             entity.Id.ToString(),
                             property.Name,
                             original is not null ? JsonSerializer.Serialize(original) : null,
                             current is not null ? JsonSerializer.Serialize(current) : null,
                             _identityService.GetUserIdentity(),
-                            DateTimeOffset.UtcNow);
+                            DateTimeOffset.UtcNow
+                        );
 
                         await _auditEventService.AddEventAsync(auditEvent);
                     }
@@ -150,9 +162,12 @@ public class MasterDbContext : DbContext, IUnitOfWork
         return Database.CreateExecutionStrategy();
     }
 
-    public async Task<IDbContextTransaction?> BeginTransactionAsync(CancellationToken cancellationToken)
+    public async Task<IDbContextTransaction?> BeginTransactionAsync(
+        CancellationToken cancellationToken
+    )
     {
-        if (_currentTransaction != null) return null;
+        if (_currentTransaction != null)
+            return null;
 
         _currentTransaction = await Database.BeginTransactionAsync(cancellationToken);
 
@@ -161,9 +176,12 @@ public class MasterDbContext : DbContext, IUnitOfWork
 
     public async Task CommitTransactionAsync(IDbContextTransaction? transaction)
     {
-        if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+        if (transaction == null)
+            throw new ArgumentNullException(nameof(transaction));
         if (transaction != _currentTransaction)
-            throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+            throw new InvalidOperationException(
+                $"Transaction {transaction.TransactionId} is not current"
+            );
 
         try
         {

@@ -24,6 +24,10 @@ public class OrderFactoryTests
 
         var order = Order.CreateNewDraft(address);
 
-        Assert.Equal(DateTimeOffset.UtcNow.DateTime, order.OrderDate.DateTime, TimeSpan.FromSeconds(1));
+        Assert.Equal(
+            DateTimeOffset.UtcNow.DateTime,
+            order.OrderDate.DateTime,
+            TimeSpan.FromSeconds(1)
+        );
     }
 }

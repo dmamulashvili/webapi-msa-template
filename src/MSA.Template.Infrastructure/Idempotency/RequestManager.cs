@@ -15,11 +15,9 @@ public class RequestManager : IRequestManager
         _dbContext = Guard.Against.Null(dbContext);
     }
 
-
     public async Task<bool> ExistAsync(Guid id)
     {
-        var request = await _dbContext.
-            FindAsync<ClientRequest>(id);
+        var request = await _dbContext.FindAsync<ClientRequest>(id);
 
         return request != null;
     }
@@ -28,9 +26,9 @@ public class RequestManager : IRequestManager
     {
         var exists = await ExistAsync(id);
 
-        var request = exists ?
-            throw new DomainException($"Request with {id} already exists") :
-            new ClientRequest()
+        var request = exists
+            ? throw new DomainException($"Request with {id} already exists")
+            : new ClientRequest()
             {
                 Id = id,
                 Name = typeof(T).Name,

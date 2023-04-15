@@ -4,14 +4,16 @@ namespace AuditEvents;
 
 public class EntityPropertyModifiedAuditEvent : BaseAuditEvent
 {
-    public EntityPropertyModifiedAuditEvent(Guid correlationId,
+    public EntityPropertyModifiedAuditEvent(
+        Guid correlationId,
         string entityName,
         string entityId,
         string propertyName,
         string? propertyOriginalValue,
         string? propertyCurrentValue,
         Guid initiatorId,
-        DateTimeOffset creationDate)
+        DateTimeOffset creationDate
+    )
     {
         CorrelationId = correlationId;
         EntityName = entityName;

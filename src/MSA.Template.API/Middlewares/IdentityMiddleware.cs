@@ -9,8 +9,11 @@ public class IdentityMiddleware
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<IdentityMiddleware> _logger;
 
-    public IdentityMiddleware(RequestDelegate next, ILogger<IdentityMiddleware> logger,
-        IHttpContextAccessor httpContextAccessor)
+    public IdentityMiddleware(
+        RequestDelegate next,
+        ILogger<IdentityMiddleware> logger,
+        IHttpContextAccessor httpContextAccessor
+    )
     {
         _next = next;
         _logger = logger;
@@ -19,9 +22,14 @@ public class IdentityMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var identityProviderService = context.RequestServices.GetRequiredService<IIdentityServiceProvider>();
-        if (Guid.TryParse(_httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                out var userIdentity))
+        var identityProviderService =
+            context.RequestServices.GetRequiredService<IIdentityServiceProvider>();
+        if (
+            Guid.TryParse(
+                _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                out var userIdentity
+            )
+        )
         {
             identityProviderService.SetUserIdentity(userIdentity);
         }

@@ -15,14 +15,19 @@ public class CancelOrderCommandHandler : BaseCommandHandler<CancelOrderCommand, 
 
     private readonly ILogger<PlaceOrderCommandHandler> _logger;
 
-    public CancelOrderCommandHandler(IRepository<Order, Guid> repository,
-        ILogger<PlaceOrderCommandHandler> logger)
+    public CancelOrderCommandHandler(
+        IRepository<Order, Guid> repository,
+        ILogger<PlaceOrderCommandHandler> logger
+    )
     {
         _repository = Guard.Against.Null(repository);
         _logger = Guard.Against.Null(logger);
     }
 
-    public override async Task<bool> Handle(CancelOrderCommand command, CancellationToken cancellationToken)
+    public override async Task<bool> Handle(
+        CancelOrderCommand command,
+        CancellationToken cancellationToken
+    )
     {
         var order = await _repository.FindByIdAsync(command.Id);
 

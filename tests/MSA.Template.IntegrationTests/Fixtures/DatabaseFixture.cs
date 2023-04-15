@@ -13,7 +13,9 @@ public class DatabaseFixture : IDisposable
     public DatabaseFixture()
     {
         var dbOptions = new DbContextOptionsBuilder<MasterDbContext>()
-            .UseNpgsql("Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres")
+            .UseNpgsql(
+                "Server=localhost;Port=5432;Database=Test_MSA.TemplateDb;User Id=postgres;password=postgres"
+            )
             .Options;
 
         var mediator = Mock.Of<IMediator>();
@@ -21,8 +23,12 @@ public class DatabaseFixture : IDisposable
         identityService.Setup(s => s.GetUserIdentity()).Returns(Guid.NewGuid);
         var auditEventService = Mock.Of<IAuditEventService>();
 
-        MasterDbContext = new MasterDbContext(dbOptions, mediator, identityService.Object,
-            auditEventService);
+        MasterDbContext = new MasterDbContext(
+            dbOptions,
+            mediator,
+            identityService.Object,
+            auditEventService
+        );
         SlaveDbContext = new SlaveDbContext(dbOptions);
 
         MasterDbContext.Database.EnsureCreated();

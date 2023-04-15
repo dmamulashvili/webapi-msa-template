@@ -6,8 +6,11 @@ namespace IntegrationEvents;
 
 public class OrderPlacedIntegrationEvent : IIntegrationEvent
 {
-    public OrderPlacedIntegrationEvent(Guid orderId, DateTimeOffset orderDate,
-        IReadOnlyCollection<OrderLineIntegrationEventDto> orderLines)
+    public OrderPlacedIntegrationEvent(
+        Guid orderId,
+        DateTimeOffset orderDate,
+        IReadOnlyCollection<OrderLineIntegrationEventDto> orderLines
+    )
     {
         OrderId = orderId;
         OrderDate = orderDate;
@@ -19,7 +22,6 @@ public class OrderPlacedIntegrationEvent : IIntegrationEvent
     public DateTimeOffset OrderDate { get; private set; }
 
     public IReadOnlyCollection<OrderLineIntegrationEventDto> OrderLines { get; private set; }
-
 
     public class OrderLineIntegrationEventDto
     {

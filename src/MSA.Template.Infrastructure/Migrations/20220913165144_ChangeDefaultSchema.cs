@@ -10,68 +10,76 @@ namespace MSA.Template.Infrastructure.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_OutboxMessage_SequenceNumber_OutboxId",
-                table: "OutboxMessage");
+                table: "OutboxMessage"
+            );
 
-            migrationBuilder.EnsureSchema(
-                name: "api");
+            migrationBuilder.EnsureSchema(name: "api");
 
             migrationBuilder.RenameTable(
                 name: "OrderLine",
                 schema: "Application",
                 newName: "OrderLine",
-                newSchema: "api");
+                newSchema: "api"
+            );
 
             migrationBuilder.RenameTable(
                 name: "Order",
                 schema: "Application",
                 newName: "Order",
-                newSchema: "api");
+                newSchema: "api"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ClientRequest",
                 schema: "Application",
                 newName: "ClientRequest",
-                newSchema: "api");
+                newSchema: "api"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_OutboxMessage_OutboxId_SequenceNumber",
                 table: "OutboxMessage",
                 columns: new[] { "OutboxId", "SequenceNumber" },
-                unique: true);
+                unique: true
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
                 name: "IX_OutboxMessage_OutboxId_SequenceNumber",
-                table: "OutboxMessage");
+                table: "OutboxMessage"
+            );
 
-            migrationBuilder.EnsureSchema(
-                name: "Application");
+            migrationBuilder.EnsureSchema(name: "Application");
 
             migrationBuilder.RenameTable(
                 name: "OrderLine",
                 schema: "api",
                 newName: "OrderLine",
-                newSchema: "Application");
+                newSchema: "Application"
+            );
 
             migrationBuilder.RenameTable(
                 name: "Order",
                 schema: "api",
                 newName: "Order",
-                newSchema: "Application");
+                newSchema: "Application"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ClientRequest",
                 schema: "api",
                 newName: "ClientRequest",
-                newSchema: "Application");
+                newSchema: "Application"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_OutboxMessage_SequenceNumber_OutboxId",
                 table: "OutboxMessage",
                 columns: new[] { "SequenceNumber", "OutboxId" },
-                unique: true);
+                unique: true
+            );
         }
     }
 }

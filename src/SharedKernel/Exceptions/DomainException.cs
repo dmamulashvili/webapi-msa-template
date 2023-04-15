@@ -6,12 +6,10 @@ public class DomainException : Exception
 {
     private readonly bool _showStackTrace = true;
 
-    public DomainException()
-    { }
+    public DomainException() { }
 
     public DomainException(string message)
-        : base(message)
-    { }
+        : base(message) { }
 
     public DomainException(string message, Exception innerException, bool showStackTrace = true)
         : base(message, innerException)

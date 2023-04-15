@@ -22,22 +22,27 @@ builder.Services.AddMassTransit(configurator =>
         o.DisableInboxCleanupService();
     });
 
-    configurator.UsingAmazonSqs((context, cfg) =>
-    {
-        var amazonSqsConfig = builder.Configuration.GetSection(nameof(AmazonSqsConfiguration))
-            .Get<AmazonSqsConfiguration>();
+    configurator.UsingAmazonSqs(
+        (context, cfg) =>
+        {
+            var amazonSqsConfig = builder.Configuration
+                .GetSection(nameof(AmazonSqsConfiguration))
+                .Get<AmazonSqsConfiguration>();
 
-        Guard.Against.NullOrWhiteSpace(amazonSqsConfig.Scope, nameof(amazonSqsConfig.Scope));
+            Guard.Against.NullOrWhiteSpace(amazonSqsConfig.Scope, nameof(amazonSqsConfig.Scope));
 
-        cfg.Host(amazonSqsConfig.RegionEndpointSystemName,
-            h =>
-            {
-                h.AccessKey(amazonSqsConfig.AccessKey);
-                h.SecretKey(amazonSqsConfig.SecretKey);
+            cfg.Host(
+                amazonSqsConfig.RegionEndpointSystemName,
+                h =>
+                {
+                    h.AccessKey(amazonSqsConfig.AccessKey);
+                    h.SecretKey(amazonSqsConfig.SecretKey);
 
-                h.Scope($"{builder.Environment.EnvironmentName}_{amazonSqsConfig.Scope}", true);
-            });
-    });
+                    h.Scope($"{builder.Environment.EnvironmentName}_{amazonSqsConfig.Scope}", true);
+                }
+            );
+        }
+    );
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

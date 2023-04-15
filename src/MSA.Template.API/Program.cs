@@ -31,19 +31,26 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<DomainExceptionFilterAttribute>();
 });
-builder.Services.AddRouting(options => { options.LowercaseUrls = true; });
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+});
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy",
-        cfg => cfg
+    options.AddPolicy(
+        "CorsPolicy",
+        cfg =>
+            cfg
             // .WithOrigins(builder.Configuration.GetSection("Cors:AllowOrigins").Get<string[]>())
             .SetIsOriginAllowed(_ => true)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials()
-            .SetPreflightMaxAge(TimeSpan.FromDays(1)));
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .SetPreflightMaxAge(TimeSpan.FromDays(1))
+    );
 });
-builder.Services.AddAuthentication(options =>
+builder.Services
+    .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,36 +66,43 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuer = true,
             ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])
+            )
         };
     });
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Description = "Please enter JWT with Bearer into field",
-        Type = SecuritySchemeType.ApiKey
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
+    options.AddSecurityDefinition(
+        JwtBearerDefaults.AuthenticationScheme,
+        new OpenApiSecurityScheme
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme
-                },
-                Name = JwtBearerDefaults.AuthenticationScheme,
-                In = ParameterLocation.Header,
-            },
-            new List<string>()
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "Please enter JWT with Bearer into field",
+            Type = SecuritySchemeType.ApiKey
         }
-    });
+    );
+
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement()
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = JwtBearerDefaults.AuthenticationScheme
+                    },
+                    Name = JwtBearerDefaults.AuthenticationScheme,
+                    In = ParameterLocation.Header,
+                },
+                new List<string>()
+            }
+        }
+    );
 });
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -99,10 +113,15 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
-    optionsBuilder.UseLazyLoadingProxies().UseNpgsql(builder.Configuration.GetConnectionString(nameof(MasterDbContext)), options =>
-    {
-        // options.EnableRetryOnFailure();
-    });
+    optionsBuilder
+        .UseLazyLoadingProxies()
+        .UseNpgsql(
+            builder.Configuration.GetConnectionString(nameof(MasterDbContext)),
+            options =>
+            {
+                // options.EnableRetryOnFailure();
+            }
+        );
 });
 
 builder.Services.AddDbContext<SlaveDbContext>(optionsBuilder =>
@@ -119,7 +138,10 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<BrotliCompressionProvider>();
     options.EnableForHttps = true;
 });
-builder.Services.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Fastest; });
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<MasterDbContext>());
@@ -136,10 +158,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(cfg =>
-        {
-            cfg.DefaultModelsExpandDepth(-1); // Disable swagger schemas at bottom
-        }
-    );
+    {
+        cfg.DefaultModelsExpandDepth(-1); // Disable swagger schemas at bottom
+    });
 }
 
 app.UseCors("CorsPolicy");
@@ -158,11 +179,13 @@ app.Services.GetRequiredService<MasterDbContext>().Database.Migrate();
 
 app.Run();
 
-
 static class CustomExtensionsMethods
 {
-    public static IServiceCollection AddMasstransitUsingAmazonSqs(this IServiceCollection services,
-        IConfiguration configuration, IHostEnvironment hostEnvironment)
+    public static IServiceCollection AddMasstransitUsingAmazonSqs(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IHostEnvironment hostEnvironment
+    )
     {
         services.AddMassTransit(configurator =>
         {
@@ -175,46 +198,71 @@ static class CustomExtensionsMethods
                 o.DisableInboxCleanupService();
             });
 
-            configurator.AddConsumers(typeof(OrderPaymentSucceededIntegrationEventHandler).Assembly);
+            configurator.AddConsumers(
+                typeof(OrderPaymentSucceededIntegrationEventHandler).Assembly
+            );
 
-            configurator.UsingAmazonSqs((context, cfg) =>
-            {
-                var amazonSqsConfig = configuration.GetSection(nameof(AmazonSqsConfiguration))
-                    .Get<AmazonSqsConfiguration>();
+            configurator.UsingAmazonSqs(
+                (context, cfg) =>
+                {
+                    var amazonSqsConfig = configuration
+                        .GetSection(nameof(AmazonSqsConfiguration))
+                        .Get<AmazonSqsConfiguration>();
 
-                Guard.Against.NullOrWhiteSpace(amazonSqsConfig.Scope, nameof(amazonSqsConfig.Scope));
+                    Guard.Against.NullOrWhiteSpace(
+                        amazonSqsConfig.Scope,
+                        nameof(amazonSqsConfig.Scope)
+                    );
 
-                cfg.Host(amazonSqsConfig.RegionEndpointSystemName,
-                    h =>
-                    {
-                        h.AccessKey(amazonSqsConfig.AccessKey);
-                        h.SecretKey(amazonSqsConfig.SecretKey);
-
-                        h.Scope($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}", true);
-                    });
-
-                Guard.Against.NullOrWhiteSpace(amazonSqsConfig.QueueName, nameof(amazonSqsConfig.QueueName));
-
-                cfg.ReceiveEndpoint($"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}_{amazonSqsConfig.QueueName}",
-                    e =>
-                    {
-                        e.UseMessageRetry(r =>
+                    cfg.Host(
+                        amazonSqsConfig.RegionEndpointSystemName,
+                        h =>
                         {
-                            r.Interval(5, TimeSpan.FromMinutes(1));
-                        });
+                            h.AccessKey(amazonSqsConfig.AccessKey);
+                            h.SecretKey(amazonSqsConfig.SecretKey);
 
-                        e.ConfigureConsumers(context);
+                            h.Scope(
+                                $"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}",
+                                true
+                            );
+                        }
+                    );
 
-                        e.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
+                    Guard.Against.NullOrWhiteSpace(
+                        amazonSqsConfig.QueueName,
+                        nameof(amazonSqsConfig.QueueName)
+                    );
 
-                        e.QueueAttributes.Add(QueueAttributeName.VisibilityTimeout,
-                            TimeSpan.FromMinutes(20).TotalSeconds);
-                        e.QueueAttributes.Add(QueueAttributeName.ReceiveMessageWaitTimeSeconds, 20);
-                        e.QueueAttributes.Add(QueueAttributeName.MessageRetentionPeriod,
-                            TimeSpan.FromDays(10).TotalSeconds);
-                        e.WaitTimeSeconds = 20;
-                    });
-            });
+                    cfg.ReceiveEndpoint(
+                        $"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}_{amazonSqsConfig.QueueName}",
+                        e =>
+                        {
+                            e.UseMessageRetry(r =>
+                            {
+                                r.Interval(5, TimeSpan.FromMinutes(1));
+                            });
+
+                            e.ConfigureConsumers(context);
+
+                            e.UseConsumeFilter(typeof(IdentityConsumeContextFilter<>), context);
+
+                            e.QueueAttributes.Add(
+                                QueueAttributeName.VisibilityTimeout,
+                                TimeSpan.FromMinutes(20).TotalSeconds
+                            );
+                            e.QueueAttributes.Add(
+                                QueueAttributeName.ReceiveMessageWaitTimeSeconds,
+                                20
+                            );
+                            e.QueueAttributes.Add(
+                                QueueAttributeName.MessageRetentionPeriod,
+                                TimeSpan.FromDays(10).TotalSeconds
+                            );
+                            e.WaitTimeSeconds = 20;
+                        }
+                    );
+                }
+            );
         });
 
         return services;

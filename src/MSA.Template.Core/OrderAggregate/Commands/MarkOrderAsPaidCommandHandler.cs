@@ -16,7 +16,10 @@ public class MarkOrderAsPaidCommandHandler : BaseCommandHandler<MarkOrderAsPaidC
         _repository = Guard.Against.Null(repository);
     }
 
-    public override async Task<bool> Handle(MarkOrderAsPaidCommand command, CancellationToken cancellationToken)
+    public override async Task<bool> Handle(
+        MarkOrderAsPaidCommand command,
+        CancellationToken cancellationToken
+    )
     {
         var order = await _repository.FindByIdAsync(command.Id);
 

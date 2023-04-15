@@ -6,7 +6,6 @@ namespace MSA.Template.Core.OrderAggregate.Commands;
 
 public class PlaceOrderCommand : BaseCommand<string>
 {
-
     public PlaceOrderCommand(string city, string street, IEnumerable<OrderLineDto> orderLines)
     {
         City = city;

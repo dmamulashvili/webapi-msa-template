@@ -2,7 +2,8 @@ using System.Threading.Tasks;
 
 namespace SharedKernel.Interfaces;
 
-public interface IRepository<TEntity, in TId> where TEntity : IAggregateRoot
+public interface IRepository<TEntity, in TId>
+    where TEntity : IAggregateRoot
 {
     IUnitOfWork UnitOfWork { get; }
 

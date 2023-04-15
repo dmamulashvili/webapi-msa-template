@@ -14,14 +14,19 @@ public class PlaceOrderCommandHandler : BaseCommandHandler<PlaceOrderCommand, st
 
     private readonly ILogger<PlaceOrderCommandHandler> _logger;
 
-    public PlaceOrderCommandHandler(IRepository<Order, Guid> repository,
-        ILogger<PlaceOrderCommandHandler> logger)
+    public PlaceOrderCommandHandler(
+        IRepository<Order, Guid> repository,
+        ILogger<PlaceOrderCommandHandler> logger
+    )
     {
         _repository = Guard.Against.Null(repository);
         _logger = Guard.Against.Null(logger);
     }
 
-    public override async Task<string> Handle(PlaceOrderCommand command, CancellationToken cancellationToken)
+    public override async Task<string> Handle(
+        PlaceOrderCommand command,
+        CancellationToken cancellationToken
+    )
     {
         var address = new Address(command.City, command.Street);
         var order = Order.CreateNewDraft(address);

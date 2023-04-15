@@ -8,7 +8,8 @@ using SharedKernel.IntegrationEvents;
 
 namespace MSA.Template.IntegrationEventHandlers;
 
-public class OrderPaymentSucceededIntegrationEventHandler : IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>
+public class OrderPaymentSucceededIntegrationEventHandler
+    : IIntegrationEventHandler<OrderPaymentSucceededIntegrationEvent>
 {
     private readonly IMediator _mediator;
 
@@ -24,7 +25,11 @@ public class OrderPaymentSucceededIntegrationEventHandler : IIntegrationEventHan
         var @event = context.Message;
 
         return _mediator.Publish(
-            new IdentifiedCommand<MarkOrderAsPaidCommand, bool>(new MarkOrderAsPaidCommand(@event.OrderId),
-                context.CorrelationId.Value), context.CancellationToken);
+            new IdentifiedCommand<MarkOrderAsPaidCommand, bool>(
+                new MarkOrderAsPaidCommand(@event.OrderId),
+                context.CorrelationId.Value
+            ),
+            context.CancellationToken
+        );
     }
 }

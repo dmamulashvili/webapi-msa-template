@@ -14,10 +14,12 @@ public class IntegrationEventService : IIntegrationEventService
     private readonly ILogger<IntegrationEventService> _logger;
     private readonly List<IIntegrationEvent> _events = new List<IIntegrationEvent>();
 
-    public IntegrationEventService(IServiceProvider serviceProvider,
-        // IBus eventBus, 
+    public IntegrationEventService(
+        IServiceProvider serviceProvider,
+        // IBus eventBus,
         IIdentityService identityService,
-        ILogger<IntegrationEventService> logger)
+        ILogger<IntegrationEventService> logger
+    )
     {
         _serviceProvider = Guard.Against.Null(serviceProvider);
         // _eventBus = eventBus;
@@ -36,11 +38,16 @@ public class IntegrationEventService : IIntegrationEventService
         var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
         foreach (var @event in _events)
         {
-            await publishEndpoint.Publish(@event, @event.GetType(), c =>
-            {
-                c.CorrelationId = correlationId;
-                c.InitiatorId = _identityService.GetUserIdentity();
-            }, cancellationToken);
+            await publishEndpoint.Publish(
+                @event,
+                @event.GetType(),
+                c =>
+                {
+                    c.CorrelationId = correlationId;
+                    c.InitiatorId = _identityService.GetUserIdentity();
+                },
+                cancellationToken
+            );
         }
 
         _events.Clear();

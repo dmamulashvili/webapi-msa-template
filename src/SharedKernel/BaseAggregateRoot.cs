@@ -16,8 +16,10 @@ public abstract class BaseAggregateRoot<TId> : BaseEntity<TId>, IAggregateRoot
     void IAggregateRoot.SetCorrelationId(Guid correlationId) => CorrelationId = correlationId;
 
     void IAggregateRoot.SetModifiedBy(string modifiedBy) => ModifiedBy = modifiedBy;
+
     void IAggregateRoot.SetDateModified(DateTimeOffset dateModified) => DateModified = dateModified;
 
     void IAggregateRoot.SetCreatedBy(string createdBy) => CreatedBy = createdBy;
+
     void IAggregateRoot.SetDateCreated(DateTimeOffset dateCreated) => DateCreated = dateCreated;
 }

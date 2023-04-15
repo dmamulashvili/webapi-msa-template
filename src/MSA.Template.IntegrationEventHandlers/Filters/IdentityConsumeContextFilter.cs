@@ -5,7 +5,8 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.IntegrationEventHandlers.Filters;
 
-public class IdentityConsumeContextFilter<T> : IFilter<ConsumeContext<T>> where T : class
+public class IdentityConsumeContextFilter<T> : IFilter<ConsumeContext<T>>
+    where T : class
 {
     private readonly IIdentityServiceProvider _identityServiceProvider;
 
@@ -14,9 +15,7 @@ public class IdentityConsumeContextFilter<T> : IFilter<ConsumeContext<T>> where 
         _identityServiceProvider = Guard.Against.Null(identityServiceProvider);
     }
 
-    public void Probe(ProbeContext context)
-    {
-    }
+    public void Probe(ProbeContext context) { }
 
     public Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
     {

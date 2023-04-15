@@ -5,7 +5,8 @@ using SharedKernel.Interfaces;
 
 namespace MSA.Template.Infrastructure.Data;
 
-public class BaseRepository<TEntity, TId> : IRepository<TEntity, TId> where TEntity : BaseEntity<TId>, IAggregateRoot
+public class BaseRepository<TEntity, TId> : IRepository<TEntity, TId>
+    where TEntity : BaseEntity<TId>, IAggregateRoot
 {
     private readonly MasterDbContext _dbContext;
 

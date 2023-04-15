@@ -23,24 +23,30 @@ public class OrdersController : ControllerBase
         _logger = Guard.Against.Null(logger);
     }
 
-
     [HttpPost("place")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> PlaceOrderAsync([FromBody] PlaceOrderCommand command, [FromHeader(Name = "x-request-id")] string requestId)
+    public async Task<IActionResult> PlaceOrderAsync(
+        [FromBody] PlaceOrderCommand command,
+        [FromHeader(Name = "x-request-id")] string requestId
+    )
     {
         var commandResult = string.Empty;
 
         if (Guid.TryParse(requestId, out Guid correlationId) && correlationId != Guid.Empty)
         {
-            var identifiedCommand = new IdentifiedCommand<PlaceOrderCommand, string>(command, correlationId);
+            var identifiedCommand = new IdentifiedCommand<PlaceOrderCommand, string>(
+                command,
+                correlationId
+            );
 
             _logger.LogInformation(
                 "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 identifiedCommand.GetGenericTypeName(),
                 nameof(identifiedCommand.CorrelationId),
                 identifiedCommand.CorrelationId,
-                identifiedCommand);
+                identifiedCommand
+            );
 
             commandResult = await _mediator.Send(identifiedCommand);
         }
@@ -56,20 +62,27 @@ public class OrdersController : ControllerBase
     [HttpPut("cancel")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> CancelOrderAsync([FromBody] CancelOrderCommand command, [FromHeader(Name = "x-request-id")] string requestId)
+    public async Task<IActionResult> CancelOrderAsync(
+        [FromBody] CancelOrderCommand command,
+        [FromHeader(Name = "x-request-id")] string requestId
+    )
     {
         bool commandResult = false;
 
         if (Guid.TryParse(requestId, out Guid correlationId) && correlationId != Guid.Empty)
         {
-            var identifiedCommand = new IdentifiedCommand<CancelOrderCommand, bool>(command, correlationId);
+            var identifiedCommand = new IdentifiedCommand<CancelOrderCommand, bool>(
+                command,
+                correlationId
+            );
 
             _logger.LogInformation(
                 "----- Sending command: {CommandName} - {IdProperty}: {CommandId} ({@Command})",
                 identifiedCommand.GetGenericTypeName(),
                 nameof(identifiedCommand.CorrelationId),
                 identifiedCommand.CorrelationId,
-                identifiedCommand);
+                identifiedCommand
+            );
 
             commandResult = await _mediator.Send(identifiedCommand);
         }

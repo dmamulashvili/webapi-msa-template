@@ -10,6 +10,7 @@ public abstract class BaseEntity<TId> : IEntity
     public TId Id { get; set; } = default!;
 
     private List<BaseDomainEvent>? _domainEvents;
+
     [NotMapped]
     public IReadOnlyCollection<BaseDomainEvent>? DomainEvents => _domainEvents?.AsReadOnly();
 

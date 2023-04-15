@@ -10,11 +10,14 @@ public class AuditEventService : IAuditEventService
     private readonly IBus _eventBus;
     private readonly ILogger<AuditEventService> _logger;
     private readonly List<IAuditEvent> _events = new();
+
     // private readonly IServiceProvider _serviceProvider;
 
-    public AuditEventService(IBus eventBus, ILogger<AuditEventService> logger
-        // ,IServiceProvider serviceProvider
-        )
+    public AuditEventService(
+        IBus eventBus,
+        ILogger<AuditEventService> logger
+    // ,IServiceProvider serviceProvider
+    )
     {
         _eventBus = Guard.Against.Null(eventBus);
         _logger = Guard.Against.Null(logger);
@@ -33,11 +36,16 @@ public class AuditEventService : IAuditEventService
         // var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
         foreach (var @events in _events.GroupBy(e => new { e.CorrelationId, e.InitiatorId }))
         {
-            await _eventBus.PublishBatch(@events, @events.First().GetType(), c =>
-            {
-                c.CorrelationId = @events.Key.CorrelationId;
-                c.InitiatorId = @events.Key.InitiatorId;
-            }, cancellationToken);
+            await _eventBus.PublishBatch(
+                @events,
+                @events.First().GetType(),
+                c =>
+                {
+                    c.CorrelationId = @events.Key.CorrelationId;
+                    c.InitiatorId = @events.Key.InitiatorId;
+                },
+                cancellationToken
+            );
         }
 
         _events.Clear();
