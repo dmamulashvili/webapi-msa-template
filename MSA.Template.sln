@@ -31,6 +31,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.Template.IntegrationTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.Template.BackgroundTasks", "src\MSA.Template.BackgroundTasks\MSA.Template.BackgroundTasks.csproj", "{3FC230B3-57D7-4BB4-B50E-19F46B4CADB6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linter", "linter", "{E8F14C13-B1EB-4A23-951A-B4926D516DD2}"
+	ProjectSection(SolutionItems) = preProject
+		.jscpd.json = .jscpd.json
+		.mega-linter.yml = .mega-linter.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
