@@ -1,12 +1,12 @@
 name: Integration & Delivery
 
 on:
-  workflow_call:
-  #push:
-  #branches:
-  #- 'develop' # DEV
-  #- 'release/**' # QA
-  #- 'main' # UAT
+#  workflow_call:
+  push:
+  branches:
+  - 'develop' # DEV
+  - 'release/**' # QA
+  - 'main' # UAT
 
 jobs:
   integration:
