@@ -2,7 +2,7 @@
 # See all available variables at https://megalinter.io/configuration/ and in linters documentation
 
 # all, none, or list of linter keys
-APPLY_FIXES: 
+APPLY_FIXES:
   - CSHARP_CSHARPIER
   - JSON_PRETTIER
   - YAML_PRETTIER
@@ -20,7 +20,9 @@ ENABLE_LINTERS:
   - YAML_PRETTIER
   - DOCKERFILE_HADOLINT
   - OPENAPI_SPECTRAL
-  - SPELL_PROSELINT
+  - SPELL_MISSPELL
+  - REPOSITORY_GITLEAKS
+  - REPOSITORY_SECRETLINT
 # DISABLE:
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
