@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using System.Text;
 using Amazon.SQS;
 using Ardalis.GuardClauses;
 using Autofac;
@@ -8,7 +10,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MSA.Template.API.Configuration;
+using MSA.Template.API.Filters;
 using MSA.Template.API.Middlewares;
 using MSA.Template.API.Services;
 using MSA.Template.Core;
@@ -18,9 +20,6 @@ using MSA.Template.IntegrationEventHandlers.Filters;
 using SharedKernel.Audit.Interfaces;
 using SharedKernel.IntegrationEvents;
 using SharedKernel.Interfaces;
-using System.IO.Compression;
-using System.Text;
-using MSA.Template.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,17 +57,23 @@ builder.Services
     })
     .AddJwtBearer(cfg =>
     {
+        var jwtValidAudience = Environment.GetEnvironmentVariable("JWT_ValidAudience");
+        var jwtValidIssuer = Environment.GetEnvironmentVariable("JWT_ValidIssuer");
+        var jwtSecret = Environment.GetEnvironmentVariable("JWT_Secret");
+
+        Guard.Against.NullOrWhiteSpace(jwtValidAudience, nameof(jwtValidAudience));
+        Guard.Against.NullOrWhiteSpace(jwtValidIssuer, nameof(jwtValidIssuer));
+        Guard.Against.NullOrWhiteSpace(jwtSecret, nameof(jwtSecret));
+
         cfg.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateLifetime = true,
             ValidateAudience = false,
-            // ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            // ValidAudience = jwtValidIssuer,
             ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidIssuer = jwtValidIssuer,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])
-            )
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
 
@@ -113,10 +118,15 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 {
+    var connStringMasterDbContext = Environment.GetEnvironmentVariable(
+        "ConnectionString_MasterDbContext"
+    );
+    Guard.Against.NullOrWhiteSpace(connStringMasterDbContext, nameof(connStringMasterDbContext));
+
     optionsBuilder
         .UseLazyLoadingProxies()
         .UseNpgsql(
-            builder.Configuration.GetConnectionString(nameof(MasterDbContext)),
+            connStringMasterDbContext,
             options =>
             {
                 // options.EnableRetryOnFailure();
@@ -126,6 +136,11 @@ builder.Services.AddDbContext<MasterDbContext>(optionsBuilder =>
 
 builder.Services.AddDbContext<SlaveDbContext>(optionsBuilder =>
 {
+    var connStringSlaveDbContext = Environment.GetEnvironmentVariable(
+        "ConnectionString_SlaveDbContext"
+    );
+    Guard.Against.NullOrWhiteSpace(connStringSlaveDbContext, nameof(connStringSlaveDbContext));
+
     optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SlaveDbContext)));
 });
 
@@ -205,36 +220,33 @@ static class CustomExtensionsMethods
             configurator.UsingAmazonSqs(
                 (context, cfg) =>
                 {
-                    var amazonSqsConfig = configuration
-                        .GetSection(nameof(AmazonSqsConfiguration))
-                        .Get<AmazonSqsConfiguration>();
+                    var projectShortName = configuration["Project:ShortName"];
 
-                    Guard.Against.NullOrWhiteSpace(
-                        amazonSqsConfig.Scope,
-                        nameof(amazonSqsConfig.Scope)
+                    Guard.Against.NullOrWhiteSpace(projectShortName, nameof(projectShortName));
+
+                    var amazonSqsAccessKey = Environment.GetEnvironmentVariable(
+                        "AmazonSQS_AccessKey"
+                    );
+                    var amazonSqsSecretKey = Environment.GetEnvironmentVariable(
+                        "AmazonSQS_SecretKey"
+                    );
+                    var amazonSqsRegionEndpointSystemName = Environment.GetEnvironmentVariable(
+                        "AmazonSQS_RegionEndpointSystemName"
                     );
 
                     cfg.Host(
-                        amazonSqsConfig.RegionEndpointSystemName,
+                        amazonSqsRegionEndpointSystemName,
                         h =>
                         {
-                            h.AccessKey(amazonSqsConfig.AccessKey);
-                            h.SecretKey(amazonSqsConfig.SecretKey);
+                            h.AccessKey(amazonSqsAccessKey);
+                            h.SecretKey(amazonSqsSecretKey);
 
-                            h.Scope(
-                                $"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}",
-                                true
-                            );
+                            h.Scope($"{hostEnvironment.EnvironmentName}_{projectShortName}", true);
                         }
                     );
 
-                    Guard.Against.NullOrWhiteSpace(
-                        amazonSqsConfig.QueueName,
-                        nameof(amazonSqsConfig.QueueName)
-                    );
-
                     cfg.ReceiveEndpoint(
-                        $"{hostEnvironment.EnvironmentName}_{amazonSqsConfig.Scope}_{amazonSqsConfig.QueueName}",
+                        $"{hostEnvironment.EnvironmentName}_{projectShortName}",
                         e =>
                         {
                             e.UseMessageRetry(r =>
