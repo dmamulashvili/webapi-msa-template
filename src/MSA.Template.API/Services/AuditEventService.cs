@@ -29,7 +29,7 @@ public class AuditEventService : IAuditEventService
 
     public async Task PublishEventsAsync(CancellationToken cancellationToken)
     {
-        // TODO: To enable OutBox uncomment below functionality and replace _eventBus with publishEndpoint. Also view TransactionBehaviour.cs
+        // TODO: To enable OutBox uncomment below functionality and replace _eventBus with publishEndpoint. Also view TransactionBehavior.cs
         // var publishEndpoint = _serviceProvider.GetRequiredService<IPublishEndpoint>();
         foreach (var @events in _events.GroupBy(e => new {e.CorrelationId, e.InitiatorId}))
         {

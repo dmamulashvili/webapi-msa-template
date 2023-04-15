@@ -5,7 +5,7 @@ using SharedKernel.Exceptions;
 
 namespace MSA.Template.UnitTests.OrderAggregate;
 
-public class OrderBehaviourTests
+public class OrderBehaviorTests
 {
     private OrderBuilder OrderBuilder { get; } = new();
 

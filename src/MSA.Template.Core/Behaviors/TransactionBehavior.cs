@@ -13,16 +13,16 @@ using System.Threading.Tasks;
 
 namespace MSA.Template.Core.Behaviors;
 
-public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : BaseCommand<TResponse>
 {
-    private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
+    private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IIntegrationEventService _integrationEventService;
     private readonly IAuditEventService _auditEventService;
 
-    public TransactionBehaviour(ILogger<TransactionBehaviour<TRequest, TResponse>> logger,
+    public TransactionBehavior(ILogger<TransactionBehavior<TRequest, TResponse>> logger,
         IUnitOfWork unitOfWork,
         IIntegrationEventService integrationEventService,
         IAuditEventService auditEventService)
