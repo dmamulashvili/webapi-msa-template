@@ -54,8 +54,8 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("cancel")]
-    [ProducesResponseType((int) HttpStatusCode.OK)]
-    [ProducesResponseType((int) HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CancelOrderAsync([FromBody] CancelOrderCommand command, [FromHeader(Name = "x-request-id")] string requestId)
     {
         bool commandResult = false;

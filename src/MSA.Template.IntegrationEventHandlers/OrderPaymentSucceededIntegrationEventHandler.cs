@@ -20,7 +20,7 @@ public class OrderPaymentSucceededIntegrationEventHandler : IIntegrationEventHan
     public Task Consume(ConsumeContext<OrderPaymentSucceededIntegrationEvent> context)
     {
         Guard.Against.Null(context.CorrelationId);
-        
+
         var @event = context.Message;
 
         return _mediator.Publish(

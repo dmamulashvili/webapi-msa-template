@@ -5,7 +5,7 @@ namespace SharedKernel.Exceptions;
 public class DomainException : Exception
 {
     private readonly bool _showStackTrace = true;
-    
+
     public DomainException()
     { }
 
@@ -18,6 +18,6 @@ public class DomainException : Exception
     {
         _showStackTrace = showStackTrace;
     }
-    
+
     public override string? StackTrace => _showStackTrace ? base.StackTrace : string.Empty;
 }

@@ -32,7 +32,7 @@ public class OrderReadOnlyRepositoryTests
 
         var spec = new RecentOrdersByPlacedStatusSpecification();
         var orders = await _readOnlyRepository.FindByAsync(spec);
-        
+
         Assert.NotEmpty(orders);
         Assert.Equal(secondPlacedOrder.Id, orders.First().Id);
     }

@@ -15,7 +15,7 @@ public class BaseRepository<TEntity, TId> : IRepository<TEntity, TId> where TEnt
     }
 
     public IUnitOfWork UnitOfWork => _dbContext;
-    
+
     public async Task AddAsync(TEntity entity)
     {
         await _dbContext.AddAsync(entity);

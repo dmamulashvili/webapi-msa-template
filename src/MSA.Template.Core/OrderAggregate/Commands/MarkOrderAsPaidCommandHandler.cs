@@ -24,9 +24,9 @@ public class MarkOrderAsPaidCommandHandler : BaseCommandHandler<MarkOrderAsPaidC
         {
             return false;
         }
-        
+
         order.MarkAsPaid();
-        
+
         return await _repository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
     }
 }

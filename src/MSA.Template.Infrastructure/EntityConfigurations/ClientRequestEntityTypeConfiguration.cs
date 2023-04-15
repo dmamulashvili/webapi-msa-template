@@ -4,7 +4,7 @@ using MSA.Template.Infrastructure.Idempotency;
 
 namespace MSA.Template.Infrastructure.EntityConfigurations;
 
-class ClientRequestEntityTypeConfiguration: IEntityTypeConfiguration<ClientRequest>
+class ClientRequestEntityTypeConfiguration : IEntityTypeConfiguration<ClientRequest>
 {
     public void Configure(EntityTypeBuilder<ClientRequest> requestConfiguration)
     {

@@ -29,7 +29,7 @@ public abstract class ValueObject
             return false;
         }
 
-        var other = (ValueObject) obj;
+        var other = (ValueObject)obj;
 
         return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
@@ -45,7 +45,7 @@ public abstract class ValueObject
     {
         return this.MemberwiseClone() as ValueObject;
     }
-    
+
     public static bool operator ==(ValueObject one, ValueObject? two)
     {
         return one?.Equals(two) ?? false;

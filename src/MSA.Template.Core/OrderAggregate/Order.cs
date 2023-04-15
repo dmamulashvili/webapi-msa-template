@@ -45,7 +45,7 @@ public class Order : BaseAggregateRoot<Guid>
         {
             throw new DomainException("Only Draft Order can be marked as Placed.");
         }
-        
+
         AddDomainEvent(new OrderPlacedDomainEvent(this));
 
         OrderStatus = OrderStatus.Placed;
@@ -68,7 +68,7 @@ public class Order : BaseAggregateRoot<Guid>
             OrderStatus = OrderStatus.Shipped;
         }
     }
-    
+
     public void MarkAsCanceled()
     {
         if (OrderStatus != OrderStatus.Shipped)

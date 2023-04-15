@@ -6,7 +6,7 @@ namespace MSA.Template.Core.OrderAggregate;
 
 public class Address : ValueObject
 {
-    public String City { get; private set; }    
+    public String City { get; private set; }
     public String Street { get; private set; }
 
     public Address(string city, string street)
