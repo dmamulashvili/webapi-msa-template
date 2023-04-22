@@ -17,8 +17,8 @@
       "applicationUrl": "https://localhost:7143;",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionString_MasterDbContext": "Server=localhost;Port=54321;Database=MSA.TemplateDb;User Id=postgres;password=postgres",
-        "ConnectionString_SlaveDbContext": "Server=localhost;Port=54321;Database=MSA.TemplateDb;User Id=postgres;password=postgres;",
+        "ConnectionString_MasterDbContext": "Server=localhost;Port=5432;Database=MSA.TemplateDb;User Id=postgres;password=postgres",
+        "ConnectionString_SlaveDbContext": "Server=localhost;Port=5432;Database=MSA.TemplateDb;User Id=postgres;password=postgres;",
         "AmazonSQS_AccessKey": "",
         "AmazonSQS_SecretKey": "",
         "AmazonSQS_RegionEndpointSystemName": "eu-central-1"
