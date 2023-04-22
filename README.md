@@ -27,28 +27,24 @@ cd /<DIRECTORY_TO_CREATE_SOLUTION_AT>
 dotnet new webapi-msa -o "MyCompany.MyProject.MyOrdering"
 ```
 
-## Configure
+## Configure launchSettings.json
 
-Update PostgreSQL writer(Master) & reader(Slave) connection strings in case you're not using local one.
+Configure PostgreSQL writer(Master) & reader(Slave) connection strings.
 
 ```json
-  "ConnectionStrings": {
-"MasterDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres",
-"SlaveDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres;"
+"environmentVariables": {
+  "ConnectionString_MasterDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres",
+  "ConnectionString_SlaveDbContext": "Server=localhost;Port=5432;Database=MyCompany.MyProject.MyOrderingDb;User Id=postgres;password=postgres;"
 },
 ```
 
-Create aws user with Programmatic access & read/write permissions to SNS/SQS.
-> **Warning**
-> The following characters are accepted in QueueName: alphanumeric characters, hyphens (-), and underscores (_).
+Create aws user with Programmatic access & read/write permissions to SNS/SQS & configure creds.
 
 ```json
-"AmazonSqsConfiguration": {
-"AccessKey": "",
-"SecretKey": "",
-"RegionEndpointSystemName": "eu-central-1",
-"Scope": "MyProject",
-"QueueName": "Ordering_API"
+"environmentVariables": {
+  "AmazonSQS_AccessKey": "",
+  "AmazonSQS_SecretKey": "",
+  "AmazonSQS_RegionEndpointSystemName": ""
 },
 ```
 
@@ -57,11 +53,21 @@ Configure JWT
 > ValidateAudience is disabled by default in `Program.cs`, you can leave it empty.
 
 ```json
-"JWT": {
-"ValidAudience": "",
-"ValidIssuer": "",
-"Secret": ""
+"environmentVariables": {
+  "JWT_ValidAudience": "",
+  "JWT_ValidIssuer": "",
+  "JWT_Secret": ""
 }
+```
+
+## Configure appsettings.json
+> **Warning**
+> The following characters are accepted in ShortName: alphanumeric characters, hyphens (-), and underscores (_).
+
+```json
+"Project": {
+  "ShortName": "Template_API"
+},
 ```
 
 > **Note**
