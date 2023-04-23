@@ -1,7 +1,7 @@
 # webapi-msa
 
 ASP.NET Core Web API Microservice Template using Clean Architecture, CQRS, Structure by Feature, Specifications,
-PostgreSQL, MassTranist with AmazonSQS & OutBox, JWT Auth
+PostgreSQL, MassTransit with AmazonSQS & OutBox, JWT Auth
 > **Note**  
 > Reference used: <https://github.com/dotnet-architecture/eShopOnContainers>
 
